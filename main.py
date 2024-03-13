@@ -1,7 +1,5 @@
 import sys
 from PySide6.QtWidgets import QApplication
-import pandas as pd
-from pandas import DataFrame
 from utils.classes import MainWindow
 
 

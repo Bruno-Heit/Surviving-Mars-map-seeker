@@ -19,7 +19,7 @@ from PySide6.QtWidgets import (QAbstractItemView, QAbstractScrollArea, QApplicat
     QGridLayout, QHBoxLayout, QHeaderView, QLineEdit,
     QListView, QListWidget, QListWidgetItem, QMainWindow,
     QPushButton, QSizePolicy, QSpacerItem, QTabWidget,
-    QTableView, QVBoxLayout, QWidget)
+    QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -134,20 +134,30 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.le_searchbar)
 
-        self.tv_mapdata = QTableView(self.body)
-        self.tv_mapdata.setObjectName(u"tv_mapdata")
-        self.tv_mapdata.setFrameShape(QFrame.NoFrame)
-        self.tv_mapdata.setFrameShadow(QFrame.Plain)
-        self.tv_mapdata.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
-        self.tv_mapdata.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.tv_mapdata.setProperty("showDropIndicator", False)
-        self.tv_mapdata.setDragDropOverwriteMode(False)
-        self.tv_mapdata.setSelectionBehavior(QAbstractItemView.SelectItems)
-        self.tv_mapdata.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.tv_mapdata.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.tv_mapdata.verticalHeader().setVisible(True)
+        self.tw_mapdata = QTableWidget(self.body)
+        if (self.tw_mapdata.columnCount() < 4):
+            self.tw_mapdata.setColumnCount(4)
+        __qtablewidgetitem = QTableWidgetItem()
+        self.tw_mapdata.setHorizontalHeaderItem(0, __qtablewidgetitem)
+        __qtablewidgetitem1 = QTableWidgetItem()
+        self.tw_mapdata.setHorizontalHeaderItem(1, __qtablewidgetitem1)
+        __qtablewidgetitem2 = QTableWidgetItem()
+        self.tw_mapdata.setHorizontalHeaderItem(2, __qtablewidgetitem2)
+        __qtablewidgetitem3 = QTableWidgetItem()
+        self.tw_mapdata.setHorizontalHeaderItem(3, __qtablewidgetitem3)
+        self.tw_mapdata.setObjectName(u"tw_mapdata")
+        self.tw_mapdata.setFrameShape(QFrame.NoFrame)
+        self.tw_mapdata.setFrameShadow(QFrame.Plain)
+        self.tw_mapdata.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
+        self.tw_mapdata.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.tw_mapdata.setProperty("showDropIndicator", False)
+        self.tw_mapdata.setDragDropOverwriteMode(False)
+        self.tw_mapdata.setSelectionBehavior(QAbstractItemView.SelectItems)
+        self.tw_mapdata.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.tw_mapdata.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.tw_mapdata.verticalHeader().setVisible(True)
 
-        self.verticalLayout.addWidget(self.tv_mapdata)
+        self.verticalLayout.addWidget(self.tw_mapdata)
 
 
         self.horizontalLayout.addWidget(self.body)
@@ -163,5 +173,13 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        ___qtablewidgetitem = self.tw_mapdata.horizontalHeaderItem(0)
+        ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"coords.", None));
+        ___qtablewidgetitem1 = self.tw_mapdata.horizontalHeaderItem(1)
+        ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"recursos", None));
+        ___qtablewidgetitem2 = self.tw_mapdata.horizontalHeaderItem(2)
+        ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"dificultad", None));
+        ___qtablewidgetitem3 = self.tw_mapdata.horizontalHeaderItem(3)
+        ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"innovaciones", None));
     # retranslateUi
 
