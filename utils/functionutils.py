@@ -1,14 +1,16 @@
 from PySide6.QtWidgets import (QTableWidget, QHeaderView)
 
 
+
 def setTableWidthPolitics(tableWidget:QTableWidget) -> None:
     '''Recibe un 'QTableWidget' y especifica las políticas de ancho de las columnas. 
     \nRetorna None.'''
     header:QHeaderView = tableWidget.horizontalHeader()
     header.setSectionResizeMode(QHeaderView.ResizeToContents)
     header.setSectionResizeMode(3, QHeaderView.Stretch)
-    header.setMinimumSectionSize(150)
+    header.setMinimumSectionSize(130)
     return None
+
 
 
 def searchTextToRegex(search_text:str) -> str:
@@ -26,3 +28,4 @@ def searchTextToRegex(search_text:str) -> str:
 
     search_regex = search_regex.rstrip("|") + ").*"
     return search_regex
+

@@ -79,45 +79,41 @@ QListWidget {
     </property>
     <item>
      <widget class="QWidget" name="sidebar" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="minimumSize">
        <size>
         <width>40</width>
         <height>0</height>
        </size>
       </property>
-      <layout class="QGridLayout" name="gridLayout">
+      <property name="maximumSize">
+       <size>
+        <width>40</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0">
+       <property name="spacing">
+        <number>10</number>
+       </property>
        <property name="leftMargin">
-        <number>0</number>
+        <number>5</number>
        </property>
        <property name="topMargin">
         <number>5</number>
        </property>
        <property name="rightMargin">
-        <number>0</number>
+        <number>5</number>
        </property>
        <property name="bottomMargin">
         <number>5</number>
        </property>
-       <property name="horizontalSpacing">
-        <number>0</number>
-       </property>
-       <property name="verticalSpacing">
-        <number>10</number>
-       </property>
-       <item row="0" column="0">
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>94</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="0" column="1" alignment="Qt::AlignRight|Qt::AlignTop">
+       <item alignment="Qt::AlignRight|Qt::AlignTop">
         <widget class="QPushButton" name="btn_sidebar_toggle">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -140,10 +136,22 @@ QListWidget {
          <property name="text">
           <string notr="true"/>
          </property>
+         <property name="iconSize">
+          <size>
+           <width>24</width>
+           <height>24</height>
+          </size>
+         </property>
+         <property name="autoRepeatInterval">
+          <number>200</number>
+         </property>
         </widget>
        </item>
-       <item row="1" column="0" colspan="2">
+       <item>
         <widget class="QListWidget" name="lw_breakthroughs">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="toolTip">
           <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Filtrar mapas por las tecnologías del campo de innovaciones&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
@@ -168,6 +176,12 @@ QListWidget {
          <property name="showDropIndicator" stdset="0">
           <bool>false</bool>
          </property>
+         <property name="alternatingRowColors">
+          <bool>false</bool>
+         </property>
+         <property name="textElideMode">
+          <enum>Qt::ElideNone</enum>
+         </property>
          <property name="verticalScrollMode">
           <enum>QAbstractItemView::ScrollPerItem</enum>
          </property>
@@ -180,9 +194,295 @@ QListWidget {
          <property name="resizeMode">
           <enum>QListView::Adjust</enum>
          </property>
+         <property name="spacing">
+          <number>3</number>
+         </property>
+         <property name="uniformItemSizes">
+          <bool>false</bool>
+         </property>
          <property name="wordWrap">
           <bool>true</bool>
          </property>
+         <item>
+          <property name="text">
+           <string>Pilotaje avanzado de drones</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Planos alienígenas</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Músculos artificiales</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Centros de mando autónomos</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Clonación</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Nanites de construcción</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Metales del núcleo</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Metales raros del núcleo</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Agua del núcleo</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Criptosueño</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Optimización de cúpulas</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Agricultura seca</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Fusión eterna</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Extractor IA</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Automatización de fábricas</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Siempre joven</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Compuestos sin fricción</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Arquitectura de gema</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Selección de genes</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Cultivos gigantes</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Buenas vibraciones</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Mente colmena</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Polarización del casco</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Fotovoltaicos hipersensibles</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Arquitectura inspiradora</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Aprendizaje interplanetario</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Extracción magnética</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Dieta marciana</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Acero marciano</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Ingenuidad marciana</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Arquitectura multiespiral</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Nanorefinamiento</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Neo-concreto</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Empatía neural</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Adaptación nocturna</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Amplificaciones de sobrecarga</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Cohetes de plasma</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Síntesis de plutonio</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Compresión de prefabricados</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Impresión de electrónica</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Proyecto Fénix</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Sueño rápido</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Modo seguro</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Bots de servicio</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Soylent Green</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Rehabilitación espacial</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Computación superconductora</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Superhongos</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Cables superiores</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Tuberías superiores</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Carga de trabajo sostenida</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>El cerebro positrónico</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Bomba de vector</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Sociedad vocacional</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Energía inalámbrica</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Computación de espacio cero</string>
+          </property>
+         </item>
         </widget>
        </item>
       </layout>
