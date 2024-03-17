@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import (QTableWidget, QHeaderView)
+import pandas
 
 
 
@@ -12,20 +13,21 @@ def setTableWidthPolitics(tableWidget:QTableWidget) -> None:
     return None
 
 
+def filterMaps(df:pandas.DataFrame, search_terms:str) -> pandas.DataFrame:
+    '''Recibe un 'pandas.DataFrame' sin filtrar junto con los criterios de búsqueda y lo filtra. 
+    \nRetorna un 'pandas.DataFrame' filtrado, o None si no hubo coincidencias.'''
+    filtered_res:pandas.DataFrame | None
+    row_indexes:list = []
 
-def searchTextToRegex(search_text:str) -> str:
-    '''Convierte el texto introducido en una expresión regular. 
-    \nRetorna un str con la regex.'''
-    terms:list[str]
-    search_regex:str = ".*("
+    # el for recorre todas las filas, iterrows() devuelve el índice y la Serie...
+    for row_idx, serie in df.loc[:, "Coordenadas":"Innovación 12"].iterrows():
 
-    # separa los términos de búsqueda en los espacios en blanco
-    terms = search_text.split()
+        # en cada Serie verifica que TODAS los 'search_terms' estén en las columnas (no importa en cuáles, pero entre todas)...
+        if all(word.lower() in ' '.join(map(str, serie)).lower() for word in search_terms):
+            # si están todas las palabras, guarda el índice de la Serie
+            row_indexes.append(row_idx)
+    
+    # si se encontraron resultados, crea un DataFrame con los índices encontrados...
+        filtered_res = df.loc[row_indexes] if row_indexes else None
 
-    # convierte los términos a regex
-    for term in terms:
-        search_regex += f"{term.strip()}|"
-
-    search_regex = search_regex.rstrip("|") + ").*"
-    return search_regex
-
+    return filtered_res

@@ -63,6 +63,7 @@ class Ui_MainWindow(object):
 "\n"
 "QListWidget {\n"
 "	background-color: rgba(244, 191, 145, 0.7);\n"
+"	font-size: 18px;\n"
 "}")
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
         self.horizontalLayout.setSpacing(5)
@@ -161,18 +162,18 @@ class Ui_MainWindow(object):
         self.lw_breakthroughs.setFrameShape(QFrame.NoFrame)
         self.lw_breakthroughs.setFrameShadow(QFrame.Plain)
         self.lw_breakthroughs.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.lw_breakthroughs.setSizeAdjustPolicy(QAbstractScrollArea.AdjustIgnored)
+        self.lw_breakthroughs.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
         self.lw_breakthroughs.setEditTriggers(QAbstractItemView.SelectedClicked)
         self.lw_breakthroughs.setTabKeyNavigation(True)
         self.lw_breakthroughs.setProperty("showDropIndicator", False)
         self.lw_breakthroughs.setAlternatingRowColors(False)
         self.lw_breakthroughs.setTextElideMode(Qt.ElideNone)
-        self.lw_breakthroughs.setVerticalScrollMode(QAbstractItemView.ScrollPerItem)
+        self.lw_breakthroughs.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
         self.lw_breakthroughs.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.lw_breakthroughs.setProperty("isWrapping", True)
+        self.lw_breakthroughs.setProperty("isWrapping", False)
         self.lw_breakthroughs.setResizeMode(QListView.Adjust)
         self.lw_breakthroughs.setSpacing(3)
-        self.lw_breakthroughs.setUniformItemSizes(False)
+        self.lw_breakthroughs.setUniformItemSizes(True)
         self.lw_breakthroughs.setWordWrap(True)
 
         self.verticalLayout_2.addWidget(self.lw_breakthroughs)
