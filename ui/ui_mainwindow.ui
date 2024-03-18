@@ -50,6 +50,11 @@ QPushButton:pressed {
 	border-left: 1px inset;
 	border-color: rgb(126, 57, 39);
 }
+QPushButton:!enabled {
+	border-color: #444;
+	background-color: rgba(255, 221, 175, 1);
+	color: #888;
+}
 
 
 QTableView {
@@ -578,6 +583,16 @@ QListWidget {
            <string>innovaciones</string>
           </property>
          </column>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_show_more">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Mostrar más resultados</string>
+         </property>
         </widget>
        </item>
       </layout>

@@ -54,6 +54,11 @@ class Ui_MainWindow(object):
 "	border-left: 1px inset;\n"
 "	border-color: rgb(126, 57, 39);\n"
 "}\n"
+"QPushButton:!enabled {\n"
+"	border-color: #444;\n"
+"	background-color: rgba(255, 221, 175, 1);\n"
+"	color: #888;\n"
+"}\n"
 "\n"
 "\n"
 "QTableView {\n"
@@ -224,6 +229,12 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.tw_mapdata)
 
+        self.btn_show_more = QPushButton(self.body)
+        self.btn_show_more.setObjectName(u"btn_show_more")
+        self.btn_show_more.setEnabled(False)
+
+        self.verticalLayout.addWidget(self.btn_show_more)
+
 
         self.horizontalLayout.addWidget(self.body)
 
@@ -363,5 +374,6 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"dificultad", None));
         ___qtablewidgetitem3 = self.tw_mapdata.horizontalHeaderItem(3)
         ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"innovaciones", None));
+        self.btn_show_more.setText(QCoreApplication.translate("MainWindow", u"Mostrar m\u00e1s resultados", None))
     # retranslateUi
 
