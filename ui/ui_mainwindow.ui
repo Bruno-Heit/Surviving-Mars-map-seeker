@@ -21,7 +21,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">* {
-	font-family: &quot;Tw Cen MT&quot;;
+	font-family: &quot;Tw Cen MT&quot;, &quot;Arial&quot;;
 	font-size: 20px;
 }</string>
   </property>
@@ -533,11 +533,21 @@ QListWidget {
        </item>
        <item>
         <widget class="QTableWidget" name="tw_mapdata">
+         <property name="styleSheet">
+          <string notr="true">#tw_mapdata::item:selected {
+	background-color: rgb(255, 211, 165);
+	border: 1px solid;
+	border-color: rgb(188, 96, 71);
+}</string>
+         </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
          <property name="frameShadow">
           <enum>QFrame::Plain</enum>
+         </property>
+         <property name="horizontalScrollBarPolicy">
+          <enum>Qt::ScrollBarAsNeeded</enum>
          </property>
          <property name="sizeAdjustPolicy">
           <enum>QAbstractScrollArea::AdjustToContents</enum>

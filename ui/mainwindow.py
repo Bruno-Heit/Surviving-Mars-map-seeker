@@ -28,7 +28,7 @@ class Ui_MainWindow(object):
         MainWindow.resize(757, 550)
         MainWindow.setMinimumSize(QSize(600, 550))
         MainWindow.setStyleSheet(u"* {\n"
-"	font-family: \"Tw Cen MT\";\n"
+"	font-family: \"Tw Cen MT\", \"Arial\";\n"
 "	font-size: 20px;\n"
 "}")
         MainWindow.setTabShape(QTabWidget.Rounded)
@@ -216,8 +216,20 @@ class Ui_MainWindow(object):
         __qtablewidgetitem3 = QTableWidgetItem()
         self.tw_mapdata.setHorizontalHeaderItem(3, __qtablewidgetitem3)
         self.tw_mapdata.setObjectName(u"tw_mapdata")
+        self.tw_mapdata.setStyleSheet(u"#tw_mapdata::item:selected {\n"
+"	background-color: rgb(255, 211, 165);\n"
+"	border: 1px solid;\n"
+"	border-color: rgb(188, 96, 71);\n"
+"}\n"
+"\n"
+"\n"
+"QLabel:selected {\n"
+"	background-color: rgb(255, 190, 255);\n"
+"	color: rgb(103, 62, 103);\n"
+"}")
         self.tw_mapdata.setFrameShape(QFrame.NoFrame)
         self.tw_mapdata.setFrameShadow(QFrame.Plain)
+        self.tw_mapdata.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self.tw_mapdata.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
         self.tw_mapdata.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.tw_mapdata.setProperty("showDropIndicator", False)

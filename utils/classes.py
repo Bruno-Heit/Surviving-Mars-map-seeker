@@ -1,8 +1,13 @@
 from ui.mainwindow import Ui_MainWindow
-from PySide6.QtWidgets import (QMainWindow, QListWidgetItem, QListView)
-from PySide6.QtGui import (QIcon, QFont)
+from ui.coordinatesdatawidget import Ui_CoordinatesDataWidget
+from ui.resourcesdatawidget import Ui_ResourcesDataWidget
+
+from PySide6.QtWidgets import (QMainWindow, QWidget)
+from PySide6.QtGui import (QIcon, QPixmap)
 from PySide6.QtCore import (QPropertyAnimation, QEasingCurve, QSize, QThread, QObject, Signal, Slot)
+
 from utils.functionutils import *
+
 import pandas
 
 
@@ -40,8 +45,8 @@ class MainWindow(QMainWindow):
         self.ui.btn_sidebar_toggle.clicked.connect(self.toggleSidebar)
         self.ui.le_searchbar.returnPressed.connect(lambda: self.handleFillTableWidget(self.ui.le_searchbar.text()) )
         self.ui.lw_breakthroughs.itemPressed.connect(lambda item: self.handleFillTableWidget(item.text(), True) )
+        self.ui.btn_show_more.clicked.connect(self.showMoreMaps)
 
-        # TODO: crear señal para el botón brn_show_more
 
         # señal de filter_worker
         self.filter_worker.progress.connect(lambda index: self.filtered_indexes.append(index))
@@ -88,7 +93,6 @@ class MainWindow(QMainWindow):
                 # convierte el texto a palabras clave
                 search_text = search_text.split()
 
-            print("handleFillTableWidget")
             self.begin_filtering.emit(self.dataframe, search_text)
 
         return None
@@ -100,6 +104,7 @@ class MainWindow(QMainWindow):
         datos.
         \nRetorna None.'''
         filtered_df:pandas.DataFrame
+        coords_data_widget:CoordinatesDataWidget # widget que muestra las coordenadas y topografía del mapa
 
         # convierte la lista de índices en tupla para que sea más rápida
         self.filtered_indexes = tuple(self.filtered_indexes)
@@ -107,17 +112,39 @@ class MainWindow(QMainWindow):
         # crea un dataframe nuevo con los mapas filtrados
         filtered_df = self.dataframe.loc[filtered_indexes]
 
-        # especifica la cantidad de filas inicial de la tabla
-        self.ui.tw_mapdata.setRowCount(100 if filtered_df.shape[0] >= 100 else filtered_df.shape[0])
+        # especifica la cantidad de filas inicial de la tabla (muestra 25)
+        self.ui.tw_mapdata.setRowCount(25 if filtered_df.shape[0] >= 25 else filtered_df.shape[0])
 
+        # TODO: crear los widgets necesarios para cada columna acá
+        for row in range(self.ui.tw_mapdata.rowCount()):
+            # columna 0: coordenadas/topografía
+            coords_data_widget = CoordinatesDataWidget(coords=self.dataframe.at[self.filtered_indexes[row], "Coordenadas"],
+                                                       topography=self.dataframe.at[self.filtered_indexes[row], "Topografía"])
+            self.ui.tw_mapdata.setCellWidget(row, 0, coords_data_widget)
+            # columna 1: recursos
+
+            # columna 2: dificultad
+
+            # columna 3: innovaciones
+
+        self.ui.tw_mapdata.resizeRowsToContents()
         return None
 
 
+    def showMoreMaps(self) -> None:
+        '''Añade otros 25 mapas a la tabla 'tw_mapdata'.
+        \nPara hacerlo, toma el índice del último mapa mostrado en la tabla y busca en el archivo ".csv"\
+        los 25 siguientes índices coincidentes guardados en 'self.filtered_indexes'.
+        \nRetorna None.'''
+        # TODO: tomar el índice del último mapa coincidente, pero para eso primero tengo que crear 
+        # todo: los widgets.
+        pass
 
 
 
 
 class FilterMapsWorker(QObject):
+    '''Clase que maneja la función y las señales que sirven para filtrar mapas en un thread/hilo aparte usando un worker.'''
     # si se encontraron resultados envía un dataframe filtrado, sino envía None
     progress:Signal = Signal(object)
     completed:Signal = Signal(None)
@@ -136,3 +163,37 @@ class FilterMapsWorker(QObject):
 
         self.completed.emit()
         return None
+
+
+
+
+
+class CoordinatesDataWidget(QWidget):
+    '''Clase simple que muestra las coordenadas del mapa y la topografía.'''
+    def __init__(self, coords:str, topography:str):
+        super(CoordinatesDataWidget, self).__init__()
+        self.coord_ui = Ui_CoordinatesDataWidget()
+        self.coord_ui.setupUi(self)
+
+        self.coord_ui.label_coords.setText(coords)
+        self.coord_ui.label_topography.setText(topography)
+
+
+
+
+
+class ResourcesDataWidget(QWidget):
+    def __init__(self):
+        super(ResourcesDataWidget, self).__init__()
+        self.resrc_ui = Ui_ResourcesDataWidget()
+        self.resrc_ui.setupUi(self)
+
+        metals_icon = QPixmap("icons/metals.ico")
+        self.resrc_ui.label_metals_icon.setPixmap(metals_icon)
+        rare_metals_icon = QPixmap("icons/rare_metals.ico")
+        self.resrc_ui.label_rare_metals_icon.setPixmap(rare_metals_icon)
+        concrete_icon = QPixmap("icons/concrete.ico")
+        self.resrc_ui.label_rare_metals_icon.setPixmap(concrete_icon)
+        water_icon = QPixmap("icons/water.ico")
+        self.resrc_ui.label_rare_metals_icon.setPixmap(water_icon)
+
