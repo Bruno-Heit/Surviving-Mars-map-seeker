@@ -21,12 +21,12 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#label_coords {
-	font-size: 20px;
+	font-size: 21px;
 }
 
 
 #label_topography {
-	font-size: 18px;
+	font-size: 19px;
 	letter-spacing: 0px;
 }</string>
   </property>

@@ -19,52 +19,114 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true">* {
-	font-family: &quot;Tw Cen MT&quot;, &quot;Arial&quot;;
-	font-size: 20px;
-}</string>
-  </property>
   <property name="tabShape">
    <enum>QTabWidget::Rounded</enum>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
-    <string notr="true">#centralwidget {
-	background-color: qlineargradient(spread:pad, x1:0, y1:0.131, x2:1, y2:0.761, stop:0 rgba(175, 79, 52, 255), stop:1 rgba(23, 20, 27, 255));
+    <string notr="true">* {
+	font-family: &quot;VertigoFLF&quot;, &quot;Tw Cen MT&quot;, &quot;Arial&quot;;
+	font-weight: bold;
+	font-size: 23px;
+	color: rgba(51, 9, 0, 1);
+}
+
+
+#centralwidget {
+	background-color: qradialgradient(spread:pad, cx:0, cy:0, radius:1.034, fx:0.16, fy:0.152, stop:0 rgba(23, 20, 27, 255), stop:1 rgba(175, 79, 52, 255));
 }
 
 
 QLineEdit,
 QPushButton {
-	background-color: rgba(244, 191, 145, 1);
+	background-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(8, 58, 117, 180), stop:0.450282 rgba(61, 156, 210, 160), stop:1 rgba(67, 239, 224, 140));
+	color: #F5E002;
 }
+
+
 QPushButton {
-	border: none;
-	border-top: 1px outset;
-	border-left: 1px outset;
-	border-color: rgb(126, 57, 39);
+	border: 1px solid;
+	border-color: rgb(61, 146, 210);
+	border-radius: 2px;
 }
 QPushButton:pressed {
 	border-top: 1px inset;
 	border-left: 1px inset;
-	border-color: rgb(126, 57, 39);
+	border-color: rgb(67, 239, 224);
 }
 QPushButton:!enabled {
 	border-color: #444;
-	background-color: rgba(255, 221, 175, 1);
+	background-color: rgba(254, 242, 216, 1);
 	color: #888;
 }
 
 
-QTableView {
-	background-color: rgba(244, 191, 145, 0.55);
+QTableWidget,
+QListWidget,
+QHeaderView::section {
+	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.749, fx:0.5, fy:0.5, stop:0 rgba(113, 238, 254, 140), stop:1 rgba(8, 58, 117, 160));
+}
+QHeaderView::section {
+	border: none;
+	border-right: 1px solid;
+	border-left: 1px solid;
+	border-color: rgba(113, 238, 254, 1);
 }
 
 
 QListWidget {
-	background-color: rgba(244, 191, 145, 0.7);
-	font-size: 18px;
+	font-size: 20px;
+}
+
+
+/* scrollbars */
+QScrollBar {
+	background-color: transparent;
+	border: 1px solid rgba(113, 238, 254, 1);
+	border-radius: 5px;
+}
+QScrollBar:groove {
+	border-radius: 5px;
+}
+QScrollBar::handle {
+	background-color: rgba(245, 224, 2, 1);
+	border-radius: 5px;
+}
+QScrollBar::handle:pressed {
+	background-color: rgba(255, 244, 22, 1);
+}
+QScrollBar::sub-line {
+	width: 0;
+	height: 0;
+	background: none;
+}
+QScrollBar::add-line {
+	width: 0;
+	height: 0;
+	background: none;
+}
+
+
+/*vertical scrollbars*/
+QScrollBar:vertical {
+	width: 13px;
+}
+QScrollBar::handle:vertical {
+	min-height: 15px;
+}
+QScrollBar::sub-page:vertical {
+	background: none;
+}
+QScrollBar::add-page:vertical {
+	background: none;
+}
+
+/*horizontal scrollbars*/
+QScrollBar:horizontal {
+	height: 13px;
+}
+QScrollBar::handle:horizontal {
+	min-width: 15px;
 }</string>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,3">
@@ -147,6 +209,9 @@ QListWidget {
            <width>24</width>
            <height>24</height>
           </size>
+         </property>
+         <property name="shortcut">
+          <string notr="true"/>
          </property>
          <property name="autoRepeatInterval">
           <number>200</number>

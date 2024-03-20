@@ -6,9 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>716</width>
+    <width>460</width>
     <height>80</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>184</width>
+    <height>40</height>
+   </size>
   </property>
   <property name="maximumSize">
    <size>
@@ -18,6 +30,9 @@
   </property>
   <property name="windowTitle">
    <string notr="true"/>
+  </property>
+  <property name="toolTip">
+   <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Niveles de recursos que hay inicialmente en el mapa.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Los niveles varían entre 1 y 4, siendo 1 escasez de un recurso y 4 su abundancia.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
   </property>
   <property name="styleSheet">
    <string notr="true">#label_metals_level,
@@ -44,8 +59,20 @@
    </property>
    <item>
     <widget class="QLabel" name="label_metals_icon">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
      <property name="toolTip">
-      <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Metales comunes disponibles inicialmente en el mapa&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Metales comunes disponibles inicialmente en el mapa&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string notr="true"/>
@@ -60,6 +87,9 @@
    </item>
    <item>
     <widget class="QLabel" name="label_metals_level">
+     <property name="toolTip">
+      <string notr="true"/>
+     </property>
      <property name="text">
       <string notr="true"/>
      </property>
@@ -76,8 +106,20 @@
    </item>
    <item>
     <widget class="QLabel" name="label_rare_metals_icon">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
      <property name="toolTip">
-      <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Metales raros disponibles inicialmente en el mapa&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Metales raros disponibles inicialmente en el mapa&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string notr="true"/>
@@ -92,6 +134,9 @@
    </item>
    <item>
     <widget class="QLabel" name="label_rare_metals_level">
+     <property name="toolTip">
+      <string notr="true"/>
+     </property>
      <property name="text">
       <string notr="true"/>
      </property>
@@ -108,8 +153,20 @@
    </item>
    <item>
     <widget class="QLabel" name="label_concrete_icon">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
      <property name="toolTip">
-      <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Concreto disponible inicialmente en el mapa&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Concreto disponible inicialmente en el mapa&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string notr="true"/>
@@ -124,6 +181,9 @@
    </item>
    <item>
     <widget class="QLabel" name="label_concrete_level">
+     <property name="toolTip">
+      <string notr="true"/>
+     </property>
      <property name="text">
       <string notr="true"/>
      </property>
@@ -140,8 +200,20 @@
    </item>
    <item>
     <widget class="QLabel" name="label_water_icon">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
      <property name="toolTip">
-      <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Agua disponible inicialmente en el mapa&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Agua disponible inicialmente en el mapa&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string notr="true"/>
@@ -156,6 +228,9 @@
    </item>
    <item>
     <widget class="QLabel" name="label_water_level">
+     <property name="toolTip">
+      <string notr="true"/>
+     </property>
      <property name="text">
       <string notr="true"/>
      </property>

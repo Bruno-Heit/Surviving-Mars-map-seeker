@@ -2,6 +2,8 @@ from ui.mainwindow import Ui_MainWindow
 from ui.coordinatesdatawidget import Ui_CoordinatesDataWidget
 from ui.resourcesdatawidget import Ui_ResourcesDataWidget
 
+import os
+
 from PySide6.QtWidgets import (QMainWindow, QWidget)
 from PySide6.QtGui import (QIcon, QPixmap)
 from PySide6.QtCore import (QPropertyAnimation, QEasingCurve, QSize, QThread, QObject, Signal, Slot)
@@ -20,10 +22,15 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         self.ui.lw_breakthroughs.hide()
 
-        # coloco los íconos en cada widget
+        # coloca el ícono en btn_sidebar_toggle
         icon:QIcon = QIcon()
-        icon.addFile("icons/icons8-menu-24-dark.png")
+        icon.addFile("icons/menu.svg", QSize(24, 24))
         self.ui.btn_sidebar_toggle.setIcon(icon)
+
+        # añado efecto box-shadow fluorescente a los widgets
+        addGlowToBorder(self.ui.btn_sidebar_toggle)
+        addGlowToBorder(self.ui.le_searchbar)
+        addGlowToBorder(self.ui.btn_show_more)
 
         # dataframe con innovaciones
         self.dataframe:pandas.DataFrame = pandas.read_csv("MapData_Breakthroughs.csv")
@@ -58,12 +65,13 @@ class MainWindow(QMainWindow):
 
 
     def toggleSidebar(self) -> None:
-        '''Abre/cierra la sidebar. 
+        '''Abre/cierra la sidebar.
         \nRetorna None.'''
         start_val:int
         end_val:int
         show_list:int
         anim:QPropertyAnimation
+        icon:QIcon
 
         start_val = self.ui.sidebar.width()
         end_val = 250 if start_val < 250 else 40
@@ -80,6 +88,7 @@ class MainWindow(QMainWindow):
         # muestra/esconde la lista de breakthroughs
         self.ui.lw_breakthroughs.show() if show_list else self.ui.lw_breakthroughs.hide()
         self.ui.lw_breakthroughs.setEnabled(False if self.ui.lw_breakthroughs.isHidden() else True)
+
         return None
 
 
@@ -122,6 +131,12 @@ class MainWindow(QMainWindow):
                                                        topography=self.dataframe.at[self.filtered_indexes[row], "Topografía"])
             self.ui.tw_mapdata.setCellWidget(row, 0, coords_data_widget)
             # columna 1: recursos
+            resources_data_widget = ResourcesDataWidget(metals_level=self.dataframe.at[self.filtered_indexes[row], "Metales"],
+                                                        rare_metals_level=self.dataframe.at[self.filtered_indexes[row], "Metales raros"],
+                                                        concrete_level=self.dataframe.at[self.filtered_indexes[row], "Concreto"],
+                                                        water_level=self.dataframe.at[self.filtered_indexes[row], "Agua"])
+            self.ui.tw_mapdata.setCellWidget(row, 1, resources_data_widget)
+            self.ui.tw_mapdata.setColumnWidth(1, 184)
 
             # columna 2: dificultad
 
@@ -152,7 +167,7 @@ class FilterMapsWorker(QObject):
     @Slot(pandas.DataFrame, str)
     def filterMapsByTerms(self, df:pandas.DataFrame, search_terms:str) -> None:
         # el for recorre todas las filas, iterrows() devuelve el índice y la Serie...
-        for row_idx, serie in df.loc[:5000, "Coordenadas":"Innovación 12"].iterrows():
+        for row_idx, serie in df.loc[:1000, "Coordenadas":"Innovación 12"].iterrows():
 
             # en cada Serie verifica que TODAS los 'search_terms' estén en las columnas (no importa en cuáles, pero entre todas)...
             if all(word.lower() in ' '.join(map(str, serie)).lower() for word in search_terms):
@@ -183,17 +198,26 @@ class CoordinatesDataWidget(QWidget):
 
 
 class ResourcesDataWidget(QWidget):
-    def __init__(self):
+    '''Clase simple que muestra los 4 recursos disponibles en el mapa al comienzo.'''
+    def __init__(self, metals_level:int, rare_metals_level:int, concrete_level:int, water_level:int):
         super(ResourcesDataWidget, self).__init__()
         self.resrc_ui = Ui_ResourcesDataWidget()
         self.resrc_ui.setupUi(self)
 
+        # TODO: cambiar qss de mainwindow usando paleta de azules igual que la gui del juego.
+
+        # coloca los íconos de cada recurso
         metals_icon = QPixmap("icons/metals.ico")
         self.resrc_ui.label_metals_icon.setPixmap(metals_icon)
         rare_metals_icon = QPixmap("icons/rare_metals.ico")
         self.resrc_ui.label_rare_metals_icon.setPixmap(rare_metals_icon)
         concrete_icon = QPixmap("icons/concrete.ico")
-        self.resrc_ui.label_rare_metals_icon.setPixmap(concrete_icon)
+        self.resrc_ui.label_concrete_icon.setPixmap(concrete_icon)
         water_icon = QPixmap("icons/water.ico")
-        self.resrc_ui.label_rare_metals_icon.setPixmap(water_icon)
+        self.resrc_ui.label_water_icon.setPixmap(water_icon)
 
+        # coloca los valores de los recursos del mapa en los labels
+        self.resrc_ui.label_metals_level.setText(f"{metals_level}")
+        self.resrc_ui.label_rare_metals_level.setText(f"{rare_metals_level}")
+        self.resrc_ui.label_concrete_level.setText(f"{concrete_level}")
+        self.resrc_ui.label_water_level.setText(f"{water_level}")

@@ -26,12 +26,12 @@ class Ui_CoordinatesDataWidget(object):
         CoordinatesDataWidget.setMaximumSize(QSize(16777215, 80))
         CoordinatesDataWidget.setWindowTitle(u"")
         CoordinatesDataWidget.setStyleSheet(u"#label_coords {\n"
-"	font-size: 20px;\n"
+"	font-size: 21px;\n"
 "}\n"
 "\n"
 "\n"
 "#label_topography {\n"
-"	font-size: 18px;\n"
+"	font-size: 19px;\n"
 "	letter-spacing: 0px;\n"
 "}")
         self.verticalLayout = QVBoxLayout(CoordinatesDataWidget)
