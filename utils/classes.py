@@ -2,7 +2,7 @@ from ui.mainwindow import Ui_MainWindow
 from ui.coordinatesdatawidget import Ui_CoordinatesDataWidget
 from ui.resourcesdatawidget import Ui_ResourcesDataWidget
 
-import os
+import resources.rc_icons
 
 from PySide6.QtWidgets import (QMainWindow, QWidget)
 from PySide6.QtGui import (QIcon, QPixmap)
@@ -24,7 +24,7 @@ class MainWindow(QMainWindow):
 
         # coloca el ícono en btn_sidebar_toggle
         icon:QIcon = QIcon()
-        icon.addFile("icons/menu.svg", QSize(24, 24))
+        icon.addFile(":/icons/menu.svg", QSize(24, 24))
         self.ui.btn_sidebar_toggle.setIcon(icon)
 
         # añado efecto box-shadow fluorescente a los widgets
@@ -204,16 +204,14 @@ class ResourcesDataWidget(QWidget):
         self.resrc_ui = Ui_ResourcesDataWidget()
         self.resrc_ui.setupUi(self)
 
-        # TODO: cambiar qss de mainwindow usando paleta de azules igual que la gui del juego.
-
         # coloca los íconos de cada recurso
-        metals_icon = QPixmap("icons/metals.ico")
+        metals_icon = QPixmap(":/icons/metals.ico")
         self.resrc_ui.label_metals_icon.setPixmap(metals_icon)
-        rare_metals_icon = QPixmap("icons/rare_metals.ico")
+        rare_metals_icon = QPixmap(":/icons/rare_metals.ico")
         self.resrc_ui.label_rare_metals_icon.setPixmap(rare_metals_icon)
-        concrete_icon = QPixmap("icons/concrete.ico")
+        concrete_icon = QPixmap(":/icons/concrete.ico")
         self.resrc_ui.label_concrete_icon.setPixmap(concrete_icon)
-        water_icon = QPixmap("icons/water.ico")
+        water_icon = QPixmap(":/icons/water.ico")
         self.resrc_ui.label_water_icon.setPixmap(water_icon)
 
         # coloca los valores de los recursos del mapa en los labels

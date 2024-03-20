@@ -1,0 +1,10 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="icons">
+        <file alias="concrete.ico">../icons/concrete.ico</file>
+        <file alias="metals.ico">../icons/metals.ico</file>
+        <file alias="rare_metals.ico">../icons/rare_metals.ico</file>
+        <file alias="water.ico">../icons/water.ico</file>
+        <file alias="menu.svg">../icons/menu.svg</file>
+    </qresource>
+</RCC>

@@ -72,6 +72,10 @@ QHeaderView::section {
 	border-left: 1px solid;
 	border-color: rgba(113, 238, 254, 1);
 }
+QTableCornerButton::section {
+	background-color: rgba(113, 238, 254, 1);
+	border: 1px solid transparent;
+}
 
 
 QListWidget {
