@@ -71,9 +71,14 @@ class Ui_MainWindow(object):
 "QListWidget,\n"
 "QHeaderView:"
                         ":section {\n"
+"	color: #fff;\n"
+"}\n"
+"QTableWidget,\n"
+"QListWidget {\n"
 "	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.749, fx:0.5, fy:0.5, stop:0 rgba(113, 238, 254, 140), stop:1 rgba(8, 58, 117, 160));\n"
 "}\n"
 "QHeaderView::section {\n"
+"	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.749, fx:0.5, fy:0.5, stop:0 rgba(113, 238, 254, 210), stop:1 rgba(8, 58, 117, 230));\n"
 "	border: none;\n"
 "	border-right: 1px solid;\n"
 "	border-left: 1px solid;\n"
@@ -91,10 +96,12 @@ class Ui_MainWindow(object):
 "\n"
 "\n"
 "/* scrollbars */\n"
-"QScrollBar {\n"
-"	background-color: transparent;\n"
+"QScrollBar:horizontal,\n"
+"QScrollBar:vertical {\n"
+"	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.749, fx:0.5, fy:0.5, stop:0 rgba(113, 238, 254, 140), stop:1 rgba(8, 58, 117, 160));;\n"
 "	border: 1px solid rgba(113, 238, 254, 1);\n"
-"	border-radius: 5px;\n"
+""
+                        "	border-radius: 5px;\n"
 "}\n"
 "QScrollBar:groove {\n"
 "	border-radius: 5px;\n"
@@ -111,8 +118,7 @@ class Ui_MainWindow(object):
 "	height: 0;\n"
 "	background: none;\n"
 "}\n"
-"QScrollBar::add-line"
-                        " {\n"
+"QScrollBar::add-line {\n"
 "	width: 0;\n"
 "	height: 0;\n"
 "	background: none;\n"
@@ -167,6 +173,9 @@ class Ui_MainWindow(object):
         self.btn_sidebar_toggle.setMinimumSize(QSize(35, 25))
         self.btn_sidebar_toggle.setMaximumSize(QSize(35, 25))
         self.btn_sidebar_toggle.setText(u"")
+        icon = QIcon()
+        icon.addFile(u":/icons/menu.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_sidebar_toggle.setIcon(icon)
         self.btn_sidebar_toggle.setIconSize(QSize(24, 24))
 #if QT_CONFIG(shortcut)
         self.btn_sidebar_toggle.setShortcut(u"")
@@ -289,11 +298,6 @@ class Ui_MainWindow(object):
         __qtablewidgetitem3 = QTableWidgetItem()
         self.tw_mapdata.setHorizontalHeaderItem(3, __qtablewidgetitem3)
         self.tw_mapdata.setObjectName(u"tw_mapdata")
-        self.tw_mapdata.setStyleSheet(u"#tw_mapdata::item:selected {\n"
-"	background-color: rgb(255, 211, 165);\n"
-"	border: 1px solid;\n"
-"	border-color: rgb(188, 96, 71);\n"
-"}")
         self.tw_mapdata.setFrameShape(QFrame.NoFrame)
         self.tw_mapdata.setFrameShadow(QFrame.Plain)
         self.tw_mapdata.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)

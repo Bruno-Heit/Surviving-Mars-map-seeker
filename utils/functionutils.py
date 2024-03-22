@@ -1,8 +1,9 @@
 from PySide6.QtWidgets import (QTableWidget, QHeaderView, QWidget, QGraphicsEffect, 
                                QGraphicsDropShadowEffect)
-from PySide6.QtGui import (QColor, QBrush, QPalette, QPixmap)
+from PySide6.QtCore import (QSize)
+from PySide6.QtGui import (QPixmap, QPaintEvent)
 
-import pandas
+from resources import (rc_images)
 
 
 
@@ -26,5 +27,3 @@ def addGlowToBorder(widget:QWidget) -> None:
     widget.setGraphicsEffect(effect)
 
     return None
-
-

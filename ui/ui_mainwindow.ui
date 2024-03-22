@@ -64,9 +64,14 @@ QPushButton:!enabled {
 QTableWidget,
 QListWidget,
 QHeaderView::section {
+	color: #fff;
+}
+QTableWidget,
+QListWidget {
 	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.749, fx:0.5, fy:0.5, stop:0 rgba(113, 238, 254, 140), stop:1 rgba(8, 58, 117, 160));
 }
 QHeaderView::section {
+	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.749, fx:0.5, fy:0.5, stop:0 rgba(113, 238, 254, 210), stop:1 rgba(8, 58, 117, 230));
 	border: none;
 	border-right: 1px solid;
 	border-left: 1px solid;
@@ -84,8 +89,9 @@ QListWidget {
 
 
 /* scrollbars */
-QScrollBar {
-	background-color: transparent;
+QScrollBar:horizontal,
+QScrollBar:vertical {
+	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.749, fx:0.5, fy:0.5, stop:0 rgba(113, 238, 254, 140), stop:1 rgba(8, 58, 117, 160));;
 	border: 1px solid rgba(113, 238, 254, 1);
 	border-radius: 5px;
 }
@@ -207,6 +213,10 @@ QScrollBar::handle:horizontal {
          </property>
          <property name="text">
           <string notr="true"/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>:/icons/menu.svg</normaloff>:/icons/menu.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -602,13 +612,6 @@ QScrollBar::handle:horizontal {
        </item>
        <item>
         <widget class="QTableWidget" name="tw_mapdata">
-         <property name="styleSheet">
-          <string notr="true">#tw_mapdata::item:selected {
-	background-color: rgb(255, 211, 165);
-	border: 1px solid;
-	border-color: rgb(188, 96, 71);
-}</string>
-         </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
