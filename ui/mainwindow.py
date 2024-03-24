@@ -17,9 +17,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractItemView, QAbstractScrollArea, QApplication, QFrame,
     QHBoxLayout, QHeaderView, QLineEdit, QListView,
-    QListWidget, QListWidgetItem, QMainWindow, QPushButton,
-    QSizePolicy, QTabWidget, QTableWidget, QTableWidgetItem,
-    QVBoxLayout, QWidget)
+    QListWidget, QListWidgetItem, QMainWindow, QProgressBar,
+    QPushButton, QSizePolicy, QTabWidget, QTableWidget,
+    QTableWidgetItem, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -95,13 +95,27 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "\n"
-"/* scrollbars */\n"
+"/* progressbar */\n"
+"QProgressBar {\n"
+"	font-size: 15px;\n"
+"	background-color: rgba(8, 58, 117, 0.5);\n"
+"	border: none;\n"
+"	border-radius: 7px;\n"
+"}\n"
+"QProgressBar::chunk {\n"
+"	background-color: #43EFE0;\n"
+"	border: none;\n"
+"	border-radius: 7px;\n"
+"}\n"
+"\n"
+"\n"
+"/*"
+                        " scrollbars */\n"
 "QScrollBar:horizontal,\n"
 "QScrollBar:vertical {\n"
 "	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.749, fx:0.5, fy:0.5, stop:0 rgba(113, 238, 254, 140), stop:1 rgba(8, 58, 117, 160));;\n"
 "	border: 1px solid rgba(113, 238, 254, 1);\n"
-""
-                        "	border-radius: 5px;\n"
+"	border-radius: 5px;\n"
 "}\n"
 "QScrollBar:groove {\n"
 "	border-radius: 5px;\n"
@@ -139,7 +153,8 @@ class Ui_MainWindow(object):
 "	background: none;\n"
 "}\n"
 "\n"
-"/*horizontal scrollbars*/\n"
+"/*horizontal"
+                        " scrollbars*/\n"
 "QScrollBar:horizontal {\n"
 "	height: 13px;\n"
 "}\n"
@@ -282,9 +297,21 @@ class Ui_MainWindow(object):
         self.le_searchbar.setInputMask(u"")
         self.le_searchbar.setText(u"")
         self.le_searchbar.setFrame(False)
-        self.le_searchbar.setPlaceholderText(u"Buscar mapas por sus caracter\u00edsticas")
+        self.le_searchbar.setPlaceholderText(u"Buscar mapas por sus caracter\u00edsticas. Por ej.: automatizaci\u00f3n, bots, agua=4, concreto>2")
 
         self.verticalLayout.addWidget(self.le_searchbar)
+
+        self.pb_searchingdata = QProgressBar(self.body)
+        self.pb_searchingdata.setObjectName(u"pb_searchingdata")
+        self.pb_searchingdata.setMinimumSize(QSize(0, 15))
+        self.pb_searchingdata.setMaximumSize(QSize(16777215, 15))
+        self.pb_searchingdata.setMaximum(25)
+        self.pb_searchingdata.setValue(0)
+        self.pb_searchingdata.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+        self.pb_searchingdata.setTextVisible(False)
+        self.pb_searchingdata.setInvertedAppearance(False)
+
+        self.verticalLayout.addWidget(self.pb_searchingdata)
 
         self.tw_mapdata = QTableWidget(self.body)
         if (self.tw_mapdata.columnCount() < 4):

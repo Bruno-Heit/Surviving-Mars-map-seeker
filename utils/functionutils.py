@@ -1,10 +1,9 @@
 from PySide6.QtWidgets import (QTableWidget, QHeaderView, QWidget, QGraphicsEffect, 
-                               QGraphicsDropShadowEffect)
-from PySide6.QtCore import (QSize)
+                               QGraphicsDropShadowEffect, QProgressBar)
+from PySide6.QtCore import (QSize, QPropertyAnimation, QEasingCurve, QObject)
 from PySide6.QtGui import (QPixmap, QPaintEvent)
 
 from resources import (rc_images)
-
 
 
 def setTableWidthPolitics(tableWidget:QTableWidget) -> None:
@@ -21,9 +20,11 @@ def addGlowToBorder(widget:QWidget) -> None:
     '''Recibe un widget cualquiera y le aplica un borde estilo neon azul. 
     \nRetorna None.'''
     effect:QGraphicsEffect = QGraphicsDropShadowEffect(widget)
+
     effect.setOffset(0, 0)
-    effect.setBlurRadius(5)
-    effect.setColor(113238254) # rgba(113, 238, 254, 1) - electric blue
+    effect.setBlurRadius(7)
+    effect.setColor(113238254) # rgb(113, 238, 254) - electric blue
     widget.setGraphicsEffect(effect)
 
     return None
+

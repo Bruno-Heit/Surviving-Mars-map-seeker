@@ -88,6 +88,20 @@ QListWidget {
 }
 
 
+/* progressbar */
+QProgressBar {
+	font-size: 15px;
+	background-color: rgba(8, 58, 117, 0.5);
+	border: none;
+	border-radius: 7px;
+}
+QProgressBar::chunk {
+	background-color: #43EFE0;
+	border: none;
+	border-radius: 7px;
+}
+
+
 /* scrollbars */
 QScrollBar:horizontal,
 QScrollBar:vertical {
@@ -606,7 +620,38 @@ QScrollBar::handle:horizontal {
           <bool>false</bool>
          </property>
          <property name="placeholderText">
-          <string notr="true">Buscar mapas por sus características</string>
+          <string notr="true">Buscar mapas por sus características. Por ej.: automatización, bots, agua=4, concreto&gt;2</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QProgressBar" name="pb_searchingdata">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>15</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>15</height>
+          </size>
+         </property>
+         <property name="maximum">
+          <number>25</number>
+         </property>
+         <property name="value">
+          <number>0</number>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+         <property name="textVisible">
+          <bool>false</bool>
+         </property>
+         <property name="invertedAppearance">
+          <bool>false</bool>
          </property>
         </widget>
        </item>
