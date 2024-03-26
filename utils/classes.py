@@ -5,8 +5,8 @@ from ui.resourcesdatawidget import Ui_ResourcesDataWidget
 from resources import (rc_icons, rc_images)
 
 from PySide6.QtWidgets import (QMainWindow, QWidget)
-from PySide6.QtGui import (QIcon, QPaintEvent, QPixmap)
-from PySide6.QtCore import (QPropertyAnimation, QEasingCurve, QSize, QThread, QObject, Signal, Slot, QEvent, Qt)
+from PySide6.QtGui import (QIcon, QPixmap, QRegularExpressionValidator)
+from PySide6.QtCore import (QPropertyAnimation, QEasingCurve, QSize, QThread, QObject, Signal, Slot)
 
 from utils.functionutils import *
 
@@ -25,10 +25,19 @@ class MainWindow(QMainWindow):
         self.ui.lw_breakthroughs.hide()
         self.ui.pb_searchingdata.hide()
 
+        # coloco un QValidator a le_searchbar
+        validator = QRegularExpressionValidator("[\w ,=!<>]*", self.ui.le_searchbar)
+        self.ui.le_searchbar.setValidator(validator)
+
         # coloca el ícono en btn_sidebar_toggle
-        icon:QIcon = QIcon()
+        icon = QIcon()
         icon.addFile(":/icons/menu.svg", QSize(24, 24))
         self.ui.btn_sidebar_toggle.setIcon(icon)
+        # coloca el ícono en btn_show_search_info
+        icon = QIcon()
+        icon.addFile(":/icons/show_info.ico", QSize(24, 24))
+        self.ui.btn_show_search_info.setIcon(icon)
+
 
         # añado efecto box-shadow fluorescente a los widgets
         addGlowToBorder(self.ui.btn_sidebar_toggle)
@@ -36,12 +45,35 @@ class MainWindow(QMainWindow):
         addGlowToBorder(self.ui.btn_show_more)
         addGlowToBorder(self.ui.pb_searchingdata)
 
+        # TODO: añadir íconos en Qt Designer a los elementos de dificultad
+
         # dataframe con innovaciones
         pandas_usecols:list[str] = [
-            "Coordenadas","Topografía","Dificultad_del_desafío","Altitud","Temperatura","Metales","Metales_raros",
-            "Concreto","Agua","Remolinos_de_polvo","Tormentas_de_arena","Meteoros","Olas_de_frío","Innovación_1",
-            "Innovación_2","Innovación_3","Innovación_4","Innovación_5","Innovación_6","Innovación_7","Innovación_8",
-            "Innovación_9","Innovación_10","Innovación_11","Innovación_12"
+            "Coordenadas",
+            "Topografia",
+            "Dificultad_del_desafio",
+            "Altitud",
+            "Temperatura",
+            "Metales",
+            "Metales_raros",
+            "Concreto",
+            "Agua",
+            "Remolinos_de_polvo",
+            "Tormentas_de_arena",
+            "Meteoritos",
+            "Olas_de_frio",
+            "Innovacion_1",
+            "Innovacion_2",
+            "Innovacion_3",
+            "Innovacion_4",
+            "Innovacion_5",
+            "Innovacion_6",
+            "Innovacion_7",
+            "Innovacion_8",
+            "Innovacion_9",
+            "Innovacion_10",
+            "Innovacion_11",
+            "Innovacion_12"
             ]
         pandas_dtype:dict[str:str] = {
             "Coordenadas":"string",
@@ -55,7 +87,7 @@ class MainWindow(QMainWindow):
             "Agua":"uint8",
             "Remolinos_de_polvo":"uint8",
             "Tormentas_de_arena":"uint8",
-            "Meteoros":"uint8",
+            "Meteoritos":"uint8",
             "Olas_de_frío":"uint8",
             "Innovación_1":"string",
             "Innovación_2":"string",
@@ -76,6 +108,8 @@ class MainWindow(QMainWindow):
         self.search_terms:str = None
         # lista de índices coincidentes
         self.filtered_indexes:list = []
+        # último índice coincidente (para btn_show_more)
+        self.last_index:int = None
 
         # determina las políticas del ancho de las columnas de la tabla
         setTableWidthPolitics(self.ui.tw_mapdata)
@@ -91,6 +125,7 @@ class MainWindow(QMainWindow):
         self.ui.le_searchbar.returnPressed.connect(lambda: self.handleFillTableWidget(self.ui.le_searchbar.text()) )
         self.ui.lw_breakthroughs.itemPressed.connect(lambda item: self.handleFillTableWidget(item.text(), True) )
         self.ui.btn_show_more.clicked.connect(self.showMoreMaps)
+        self.ui.btn_show_search_info.clicked.connect(self.showInfoWidget)
 
         # señal de filter_worker
         self.filter_worker.progress.connect(lambda index: self.filteringProgressMade(index))
@@ -134,21 +169,23 @@ class MainWindow(QMainWindow):
         \nSi 'list_selected' es True es porque se selecciona una innovación desde 'lw_breakthroughs', si False \
         se seleccionó desde 'le_searchbar'.
         \nRetorna None.'''
-        search_terms:list[str]
-        columns_list:pandas.Index[str]
-        pattern:str
-        re_res:list
+        search_terms:list[str]|str
+        expression:str # contiene la expresión de búsqueda que usa pandas.query()
 
         if search_text.strip() != "": # si el texto no está vacío...
             if not list_selected: # si no se selecciona desde lw_breakthroughs...
+                search_text = search_text.rstrip(",") if search_text.endswith(",") else search_text
+                
                 # convierte el texto a palabras clave
                 search_terms = search_text.split(",")
-
                 search_terms = [term.strip() for term in search_terms]
             
-            # TODO: verificar si se está buscando en alguna columna específica, y crear un pandas.df.query()
+            else: # si se seleccionó usando lw_breakthroughs...
+                search_terms = search_text
 
-            self.begin_filtering.emit(self.dataframe, search_terms)
+            expression = getFilterPandasQuery(search_terms)
+
+            # self.begin_filtering.emit(self.dataframe, search_terms)
 
         return None
 
@@ -159,7 +196,7 @@ class MainWindow(QMainWindow):
         a 25 se reinicia la lista.
         \nAdemás anima los cambios entre 'chunks' de la barra de progreso 'pb_searchingdata'.
         \nRetorna None.'''
-        self.filtered_indexes.append(index) if len(self.filtered_indexes) <= 25 else self.filtered_indexes.clear()
+        self.filtered_indexes.append(index) if len(self.filtered_indexes) < 25 else self.filtered_indexes.clear()
 
         # si pb_searchingdata está escondido es porque recién comienza a buscar FilterMapsWorker
         if self.ui.pb_searchingdata.isHidden():
@@ -184,8 +221,8 @@ class MainWindow(QMainWindow):
         self.ui.pb_searchingdata.reset()
         self.ui.pb_searchingdata.hide()
 
-        # convierte la lista de índices en tupla para que sea más rápida
-        self.filtered_indexes = tuple(self.filtered_indexes)
+        # guarda el último índice (para btn_show_more)
+        self.last_index = self.filtered_indexes[-1] if self.filtered_indexes else 50901
 
         # crea un dataframe nuevo con los mapas filtrados
         filtered_df = self.dataframe.loc[filtered_indexes]
@@ -197,7 +234,8 @@ class MainWindow(QMainWindow):
         for row in range(self.ui.tw_mapdata.rowCount()):
             # columna 0: coordenadas/topografía
             coords_data_widget = CoordinatesDataWidget(coords=self.dataframe.at[self.filtered_indexes[row], "Coordenadas"],
-                                                       topography=self.dataframe.at[self.filtered_indexes[row], "Topografía"])
+                                                       topography=self.dataframe.at[self.filtered_indexes[row], "Topografia"],
+                                                       altitude=str(self.dataframe.at[self.filtered_indexes[row], "Altitud"]))
             self.ui.tw_mapdata.setCellWidget(row, 0, coords_data_widget)
             # columna 1: recursos
             resources_data_widget = ResourcesDataWidget(metals_level=self.dataframe.at[self.filtered_indexes[row], "Metales"],
@@ -211,8 +249,6 @@ class MainWindow(QMainWindow):
 
             # columna 3: innovaciones
         
-        # vuelve a convertirla a lista
-        self.filtered_indexes = list(self.filtered_indexes)
 
         self.ui.tw_mapdata.resizeRowsToContents()
         return None
@@ -223,8 +259,11 @@ class MainWindow(QMainWindow):
         \nPara hacerlo, toma el índice del último mapa mostrado en la tabla y busca en el archivo ".csv"\
         los 25 siguientes índices coincidentes guardados en 'self.filtered_indexes'.
         \nRetorna None.'''
-        # TODO: tomar el índice del último mapa coincidente, pero para eso primero tengo que crear 
-        # todo: los widgets.
+        # TODO: buscar cómo llamar a FilterMapsWorker para que busque más mapas
+        pass
+
+
+    def showInfoWidget(self) -> None:
         pass
 
 
@@ -238,14 +277,28 @@ class FilterMapsWorker(QObject):
     progress:Signal = Signal(object)
     completed:Signal = Signal(None)
     
+
     @Slot(pandas.DataFrame)
-    def filterMapsByTerms(self, df:pandas.DataFrame, search_terms:list[str]) -> None:
-        print(search_terms)
+    def filterMapsByTerms(self, df:pandas.DataFrame, search_terms:list[str], from_index:int=0, to_index:int=50901, 
+                          from_col:str="Coordenadas", to_col:str="Innovacion_12") -> None:
+        '''En un thread paralelo filtra el pandas.DataFrame a partir de los términos de búsqueda introducidos.
+
+        - df: el pandas.DataFrame que hay que filtrar.
+        - search_terms: lista de strings con los términos de búsqueda obtenidos.
+        - from_index (opcional): valor entero que representa la fila desde la cual buscar.
+        - to_index (opcional): valor entero que representa la fila hasta donde buscar.
+        - from_col (opcional): string que representa la columna desde la cual buscar.
+        - to_col (opcional): string que representa la columna hasta donde buscar.
+
+        A medida que encuentra pandas.Series coincidentes emite el índice a MainWindow.filteringProgressMade().
+        
+        Retorna None.
+        '''
 
         cont:int = 0 # cuenta los mapas coincidentes, cuando llega a 25 sale del bucle
         
         # el for recorre todas las filas, iterrows() devuelve el índice y la Serie...
-        for row_idx, serie in df.loc[0:, "Coordenadas":"Innovación_12"].iterrows():
+        for row_idx, serie in df.loc[from_index:to_index, from_col:to_col].iterrows():
 
             # en cada Serie verifica que TODAS los 'search_terms' estén en las columnas (no importa en cuáles, pero entre todas)...
             if all(word.lower() in ' '.join(map(str, serie)).lower() for word in search_terms) and cont < 25:
@@ -253,7 +306,7 @@ class FilterMapsWorker(QObject):
                 # si están todas las palabras, emite el índice de la Serie
                 self.progress.emit(row_idx)
                 cont += 1
-
+            
             elif cont == 25:
                 break
 
@@ -266,13 +319,14 @@ class FilterMapsWorker(QObject):
 
 class CoordinatesDataWidget(QWidget):
     '''Clase simple que muestra las coordenadas del mapa y la topografía.'''
-    def __init__(self, coords:str, topography:str):
+    def __init__(self, coords:str, topography:str, altitude:str):
         super(CoordinatesDataWidget, self).__init__()
         self.coord_ui = Ui_CoordinatesDataWidget()
         self.coord_ui.setupUi(self)
 
         self.coord_ui.label_coords.setText(coords)
         self.coord_ui.label_topography.setText(topography)
+        self.coord_ui.label_altitude.setText(altitude)
 
 
 
@@ -300,3 +354,8 @@ class ResourcesDataWidget(QWidget):
         self.resrc_ui.label_rare_metals_level.setText(f"{rare_metals_level}")
         self.resrc_ui.label_concrete_level.setText(f"{concrete_level}")
         self.resrc_ui.label_water_level.setText(f"{water_level}")
+
+
+
+
+# class 

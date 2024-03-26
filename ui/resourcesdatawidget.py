@@ -38,6 +38,13 @@ class Ui_ResourcesDataWidget(object):
 "#label_rare_metals_level,\n"
 "#label_concrete_level {\n"
 "	margin-right: 5px;\n"
+"}\n"
+"\n"
+"#label_metals_level,\n"
+"#label_rare_metals_level,\n"
+"#label_concrete_level,\n"
+"#label_water_level {\n"
+"	color: #F5E002;\n"
 "}")
         self.horizontalLayout = QHBoxLayout(ResourcesDataWidget)
         self.horizontalLayout.setSpacing(3)

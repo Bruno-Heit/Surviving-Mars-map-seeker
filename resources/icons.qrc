@@ -6,5 +6,6 @@
         <file alias="rare_metals.ico">../icons/rare_metals.ico</file>
         <file alias="water.ico">../icons/water.ico</file>
         <file alias="menu.svg">../icons/menu.svg</file>
+        <file alias="show_info.ico">../icons/show_info.ico</file>
     </qresource>
 </RCC>

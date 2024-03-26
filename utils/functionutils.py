@@ -1,9 +1,11 @@
 from PySide6.QtWidgets import (QTableWidget, QHeaderView, QWidget, QGraphicsEffect, 
-                               QGraphicsDropShadowEffect, QProgressBar)
+                               QGraphicsDropShadowEffect, QProgressBar, QListWidget)
 from PySide6.QtCore import (QSize, QPropertyAnimation, QEasingCurve, QObject)
 from PySide6.QtGui import (QPixmap, QPaintEvent)
 
 from resources import (rc_images)
+
+from re import (match, split as resplit, Match, IGNORECASE)
 
 
 def setTableWidthPolitics(tableWidget:QTableWidget) -> None:
@@ -28,3 +30,80 @@ def addGlowToBorder(widget:QWidget) -> None:
 
     return None
 
+
+def getFilterPandasQuery(search_terms:list[str]) -> str:
+    '''Recibe los términos a buscar en un pandas.DataFrame y crea la expresión para la función pandas.query().
+    \nRetorna la expresión lista para usarse en pandas.query() en formato str.'''
+    expression:str = ""
+    int_res:Match|None # regex de una columna con algún número
+    str_res:Match|None # regex de una columna con algún string
+    term_exp:str # expresión sólo de un término (puede hacerse muy larga 'expression' sino)
+    split_term:list[str] = None # sólo se usa si se accede a una columna. Guarda el nombre de la col., el operador y el valor.
+    list_exp:list[str] = [] # lista que guarda todas las term_exp
+
+    # columnas agrupadas por tipo de datos
+    STR_COLS:tuple[str] = (
+        "Coordenadas",
+        "Topografía",
+        "Innovación_1",
+        "Innovación_2",
+        "Innovación_3",
+        "Innovación_4",
+        "Innovación_5",
+        "Innovación_6",
+        "Innovación_7",
+        "Innovación_8",
+        "Innovación_9",
+        "Innovación_10",
+        "Innovación_11",
+        "Innovación_12"
+    )
+    INT_COLS:tuple[str] = (
+        "Dificultad_del_desafío",
+        "Altitud",
+        "Temperatura",
+        "Metales",
+        "Metales_raros",
+        "Concreto",
+        "Agua",
+        "Remolinos_de_polvo",
+        "Tormentas_de_arena",
+        "Meteoritos",
+        "Olas_de_frío"
+    )
+
+    # recorre cada término y lo convierte a una expresión equivalente para pandas.query()...
+    for term in search_terms:
+
+        # verifica si se busca en una columna específica (y de paso, si el valor es int)
+        int_res = match("[\w ]*(==|!=|<|<=|>|>=){1}[ ]*[0-9]{1}", term, IGNORECASE) # admite todos los operadores de comparación
+        int_res = int_res.group() if int_res else None
+
+        # verifica si se busca en una columna específica (y de paso, si el valor es string)
+        str_res = match("[\w ]*(==|!=){1}[ ]*[A-Za-z ]+", term, IGNORECASE) # sólo admite igualdad o desigualdad
+        str_res = str_res.group() if str_res else None
+
+        # * verifica si el valor luego de ==|!=|<|<=|>|>= es str, int, o si no se accede a una columna.
+        # * hago esto para no tener que buscar en todas las columnas, porque al saber el tipo de dato 
+        # * que puede tener el valor de la columna puedo saber en qué columnas fijarme (si está bien 
+        # * planteada la búsqueda, por supuesto)
+        if str_res: # si se busca en una columna y el valor es str...
+            split_term = resplit("(==|!=)", term)
+            term_exp = f"( {''.join( [ split_term[0].strip().replace(' ','_'), split_term[1] ] )}'{split_term[2].strip()}' )"
+
+        elif int_res: # si se busca en una columna y el valor es int...
+            split_term = resplit("(==|!=|<|<=|>|>=)", term)
+            term_exp = f"( {''.join( [ split_term[0].strip().replace(' ','_'), split_term[1], split_term[2].strip() ] )} )"
+
+        elif not str_res and not int_res: # si no se accede a ninguna columna específica, busca en todas...
+            if term.isnumeric(): # si es un número busca en las columnas con números...
+                term_exp = f".str.contains({term}) | ".join(INT_COLS)
+            elif term.isalpha(): # si es alfabético busca en las columnas alfabéticas...
+                term_exp = f".str.contains({term}) | ".join(STR_COLS)
+                
+            term_exp = f"( {term_exp}.str.contains({term}) )"
+
+        list_exp.append(term_exp)
+        expression = ' & '.join(list_exp)
+
+    return expression

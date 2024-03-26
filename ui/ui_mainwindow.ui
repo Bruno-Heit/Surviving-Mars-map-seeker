@@ -61,21 +61,29 @@ QPushButton:!enabled {
 }
 
 
-QTableWidget,
-QListWidget,
-QHeaderView::section {
-	color: #fff;
+QListWidget {
+	color: #F5E002;
 }
+
+
+QTableWidget {
+	gridline-color:  rgba(113, 238, 254, 1);
+	margin-top: 10px;
+}
+
+
 QTableWidget,
 QListWidget {
 	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.749, fx:0.5, fy:0.5, stop:0 rgba(113, 238, 254, 140), stop:1 rgba(8, 58, 117, 160));
+	selection-color: #8E98A7;
+	selection-background-color: rgb(26, 141, 144);
 }
 QHeaderView::section {
 	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.749, fx:0.5, fy:0.5, stop:0 rgba(113, 238, 254, 210), stop:1 rgba(8, 58, 117, 230));
 	border: none;
 	border-right: 1px solid;
-	border-left: 1px solid;
 	border-color: rgba(113, 238, 254, 1);
+	color: #fff;
 }
 QTableCornerButton::section {
 	background-color: rgba(113, 238, 254, 1);
@@ -227,10 +235,6 @@ QScrollBar::handle:horizontal {
          </property>
          <property name="text">
           <string notr="true"/>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>:/icons/menu.svg</normaloff>:/icons/menu.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -591,7 +595,7 @@ QScrollBar::handle:horizontal {
      <widget class="QWidget" name="body" native="true">
       <layout class="QVBoxLayout" name="verticalLayout">
        <property name="spacing">
-        <number>10</number>
+        <number>6</number>
        </property>
        <property name="leftMargin">
         <number>5</number>
@@ -606,22 +610,101 @@ QScrollBar::handle:horizontal {
         <number>5</number>
        </property>
        <item>
-        <widget class="QLineEdit" name="le_searchbar">
+        <widget class="QFrame" name="frame">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>26</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>26</height>
+          </size>
+         </property>
          <property name="toolTip">
-          <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Permite buscar mapas a partir de innovaciones que aparecen en ellos, cantidad de agua, cantidad de minerales, entre otros tantos criterios.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="inputMask">
           <string notr="true"/>
          </property>
-         <property name="text">
-          <string notr="true"/>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
          </property>
-         <property name="frame">
-          <bool>false</bool>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
          </property>
-         <property name="placeholderText">
-          <string notr="true">Buscar mapas por sus características. Por ej.: automatización, bots, agua=4, concreto&gt;2</string>
-         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <property name="spacing">
+           <number>4</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLineEdit" name="le_searchbar">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Permite buscar mapas a partir de innovaciones que aparecen en ellos, cantidad de agua, cantidad de minerales, entre otros tantos criterios.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="inputMask">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string notr="true"/>
+            </property>
+            <property name="frame">
+             <bool>false</bool>
+            </property>
+            <property name="placeholderText">
+             <string notr="true">Buscar mapas por sus características. Por ej.: automatización, bots, agua=4, concreto&gt;2</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_show_search_info">
+            <property name="minimumSize">
+             <size>
+              <width>26</width>
+              <height>26</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>26</width>
+              <height>26</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
        <item>
@@ -686,6 +769,9 @@ QScrollBar::handle:horizontal {
          </property>
          <property name="horizontalScrollMode">
           <enum>QAbstractItemView::ScrollPerPixel</enum>
+         </property>
+         <property name="showGrid">
+          <bool>true</bool>
          </property>
          <attribute name="verticalHeaderVisible">
           <bool>true</bool>
