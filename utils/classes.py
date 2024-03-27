@@ -16,7 +16,7 @@ from re import (findall, IGNORECASE)
 
 
 class MainWindow(QMainWindow):
-    begin_filtering:Signal = Signal(pandas.DataFrame, object)
+    begin_filtering:Signal = Signal(pandas.DataFrame, str)
     
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -89,18 +89,18 @@ class MainWindow(QMainWindow):
             "Tormentas_de_arena":"uint8",
             "Meteoritos":"uint8",
             "Olas_de_frío":"uint8",
-            "Innovación_1":"string",
-            "Innovación_2":"string",
-            "Innovación_3":"string",
-            "Innovación_4":"string",
-            "Innovación_5":"string",
-            "Innovación_6":"string",
-            "Innovación_7":"string",
-            "Innovación_8":"string",
-            "Innovación_9":"string",
-            "Innovación_10":"string",
-            "Innovación_11":"string",
-            "Innovación_12":"string"
+            "Innovacion_1":"string",
+            "Innovacion_2":"string",
+            "Innovacion_3":"string",
+            "Innovacion_4":"string",
+            "Innovacion_5":"string",
+            "Innovacion_6":"string",
+            "Innovacion_7":"string",
+            "Innovacion_8":"string",
+            "Innovacion_9":"string",
+            "Innovacion_10":"string",
+            "Innovacion_11":"string",
+            "Innovacion_12":"string"
         }
         self.dataframe:pandas.DataFrame = pandas.read_csv("MapData_Breakthroughs.csv", header=0, usecols=pandas_usecols, dtype=pandas_dtype)
         
@@ -185,7 +185,7 @@ class MainWindow(QMainWindow):
 
             expression = getFilterPandasQuery(search_terms)
 
-            # self.begin_filtering.emit(self.dataframe, search_terms)
+            self.begin_filtering.emit(self.dataframe, expression)
 
         return None
 
@@ -251,6 +251,10 @@ class MainWindow(QMainWindow):
         
 
         self.ui.tw_mapdata.resizeRowsToContents()
+
+        # por último, si el último índice coincidente es menor a 50901 (el último), activa btn_show_more
+        self.ui.btn_show_more.setEnabled(True if self.filtered_indexes[-1] < 50901 else False)
+
         return None
 
 
@@ -274,17 +278,17 @@ class FilterMapsWorker(QObject):
     '''Clase que maneja la función y las señales que sirven para filtrar mapas en un thread/hilo aparte usando un worker. 
     Filtra de a 25 mapas.'''
     # si se encontraron resultados envía un dataframe filtrado, sino envía None
-    progress:Signal = Signal(object)
+    progress:Signal = Signal(pandas.Index)
     completed:Signal = Signal(None)
     
 
     @Slot(pandas.DataFrame)
-    def filterMapsByTerms(self, df:pandas.DataFrame, search_terms:list[str], from_index:int=0, to_index:int=50901, 
+    def filterMapsByTerms(self, df:pandas.DataFrame, search_expression:str, from_index:int=0, to_index:int=50901, 
                           from_col:str="Coordenadas", to_col:str="Innovacion_12") -> None:
         '''En un thread paralelo filtra el pandas.DataFrame a partir de los términos de búsqueda introducidos.
 
         - df: el pandas.DataFrame que hay que filtrar.
-        - search_terms: lista de strings con los términos de búsqueda obtenidos.
+        - search_expression: string listo para usar en pandas.query().
         - from_index (opcional): valor entero que representa la fila desde la cual buscar.
         - to_index (opcional): valor entero que representa la fila hasta donde buscar.
         - from_col (opcional): string que representa la columna desde la cual buscar.
@@ -294,21 +298,30 @@ class FilterMapsWorker(QObject):
         
         Retorna None.
         '''
+        filtered_df:pandas.DataFrame
 
-        cont:int = 0 # cuenta los mapas coincidentes, cuando llega a 25 sale del bucle
+        # cont:int = 0 # cuenta los mapas coincidentes, cuando llega a 25 sale del bucle
         
         # el for recorre todas las filas, iterrows() devuelve el índice y la Serie...
-        for row_idx, serie in df.loc[from_index:to_index, from_col:to_col].iterrows():
+        # for row_idx, serie in df.loc[from_index:to_index, from_col:to_col].iterrows():
 
-            # en cada Serie verifica que TODAS los 'search_terms' estén en las columnas (no importa en cuáles, pero entre todas)...
-            if all(word.lower() in ' '.join(map(str, serie)).lower() for word in search_terms) and cont < 25:
-
-                # si están todas las palabras, emite el índice de la Serie
-                self.progress.emit(row_idx)
-                cont += 1
+        #     # en cada Serie verifica que TODAS los 'search_terms' estén en las columnas (no importa en cuáles, pero entre todas)...
+        #     if all(word.lower() in ' '.join(map(str, serie)).lower() for word in search_terms) and cont < 25:
             
-            elif cont == 25:
-                break
+
+        #         # si están todas las palabras, emite el índice de la Serie
+        #         self.progress.emit(row_idx)
+        #         cont += 1
+            
+        #     elif cont == 25:
+        #         break
+
+        # nueva implementación ///////////////////////////////////////
+        
+        filtered_df = df.loc[from_index:to_index, from_col:to_col]
+        filtered_df = filtered_df.query(search_expression).head(25)
+
+        self.progress.emit(filtered_df.index)
 
         self.completed.emit()
         return None
