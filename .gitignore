@@ -1,6 +1,15 @@
 __pycache__
 
+/icons/sketch*
+/icons/threat_level_part_empty.png
+/icons/threat_level_part_full.png
+/icons/threat_level1_large.png
+/icons/threat_level2_large.png
+/icons/threat_level3_large.png
+/icons/threat_level4_large.png
+
 test.py
 
 .loc
 .temp
+.kra

@@ -300,24 +300,6 @@ class FilterMapsWorker(QObject):
         '''
         filtered_df:pandas.DataFrame
 
-        # cont:int = 0 # cuenta los mapas coincidentes, cuando llega a 25 sale del bucle
-        
-        # el for recorre todas las filas, iterrows() devuelve el índice y la Serie...
-        # for row_idx, serie in df.loc[from_index:to_index, from_col:to_col].iterrows():
-
-        #     # en cada Serie verifica que TODAS los 'search_terms' estén en las columnas (no importa en cuáles, pero entre todas)...
-        #     if all(word.lower() in ' '.join(map(str, serie)).lower() for word in search_terms) and cont < 25:
-            
-
-        #         # si están todas las palabras, emite el índice de la Serie
-        #         self.progress.emit(row_idx)
-        #         cont += 1
-            
-        #     elif cont == 25:
-        #         break
-
-        # nueva implementación ///////////////////////////////////////
-        
         filtered_df = df.loc[from_index:to_index, from_col:to_col]
         filtered_df = filtered_df.query(search_expression).head(25)
 
