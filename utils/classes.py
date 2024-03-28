@@ -1,6 +1,7 @@
 from ui.mainwindow import Ui_MainWindow
 from ui.coordinatesdatawidget import Ui_CoordinatesDataWidget
 from ui.resourcesdatawidget import Ui_ResourcesDataWidget
+from ui.difficultydatawidget import Ui_DifficultyDataWidget
 
 from resources import (rc_icons, rc_images)
 
@@ -38,14 +39,11 @@ class MainWindow(QMainWindow):
         icon.addFile(":/icons/show_info.ico", QSize(24, 24))
         self.ui.btn_show_search_info.setIcon(icon)
 
-
         # añado efecto box-shadow fluorescente a los widgets
         addGlowToBorder(self.ui.btn_sidebar_toggle)
         addGlowToBorder(self.ui.le_searchbar)
         addGlowToBorder(self.ui.btn_show_more)
         addGlowToBorder(self.ui.pb_searchingdata)
-
-        # TODO: añadir íconos en Qt Designer a los elementos de dificultad
 
         # dataframe con innovaciones
         pandas_usecols:list[str] = [
@@ -59,7 +57,7 @@ class MainWindow(QMainWindow):
             "Concreto",
             "Agua",
             "Remolinos_de_polvo",
-            "Tormentas_de_arena",
+            "Tormentas_de_polvo",
             "Meteoritos",
             "Olas_de_frio",
             "Innovacion_1",
@@ -86,7 +84,7 @@ class MainWindow(QMainWindow):
             "Concreto":"uint8",
             "Agua":"uint8",
             "Remolinos_de_polvo":"uint8",
-            "Tormentas_de_arena":"uint8",
+            "Tormentas_de_polvo":"uint8",
             "Meteoritos":"uint8",
             "Olas_de_frío":"uint8",
             "Innovacion_1":"string",
@@ -107,7 +105,7 @@ class MainWindow(QMainWindow):
         # lista de términos de búsqueda
         self.search_terms:str = None
         # lista de índices coincidentes
-        self.filtered_indexes:list = []
+        self.filtered_indexes:list[int] = []
         # último índice coincidente (para btn_show_more)
         self.last_index:int = None
 
@@ -129,7 +127,7 @@ class MainWindow(QMainWindow):
 
         # señal de filter_worker
         self.filter_worker.progress.connect(lambda index: self.filteringProgressMade(index))
-        self.filter_worker.completed.connect(lambda: self.filteringMapsFinished(self.filtered_indexes))
+        self.filter_worker.completed.connect(self.filteringMapsFinished)
         self.begin_filtering.connect(self.filter_worker.filterMapsByTerms)
 
         # inicio el thread (sino no funciona)
@@ -196,7 +194,8 @@ class MainWindow(QMainWindow):
         a 25 se reinicia la lista.
         \nAdemás anima los cambios entre 'chunks' de la barra de progreso 'pb_searchingdata'.
         \nRetorna None.'''
-        self.filtered_indexes.append(index) if len(self.filtered_indexes) < 25 else self.filtered_indexes.clear()
+        self.filtered_indexes.clear() if len(self.filtered_indexes) == 25 else None
+        self.filtered_indexes.append(index)
 
         # si pb_searchingdata está escondido es porque recién comienza a buscar FilterMapsWorker
         if self.ui.pb_searchingdata.isHidden():
@@ -208,14 +207,20 @@ class MainWindow(QMainWindow):
         return None
 
 
-    def filteringMapsFinished(self, filtered_indexes:tuple | None) -> None:
-        '''Una vez que se terminan de filtrar los criterios de búsqueda, recibe una tupla con los índices que \
-        coincidieron.
-        \nDetermina la cantidad de filas de la tabla, crea los widgets necesarios para cada columna y asigna los \
+    def filteringMapsFinished(self) -> None:
+        '''Una vez que se terminan de filtrar los criterios de búsqueda filtra el DataFrame existente con 
+        esos criterios.
+        
+        Determina la cantidad de filas de la tabla, crea los widgets necesarios para cada columna y asigna los 
         datos. Adicionalmente esconde la barra de progreso 'pb_searchingdata'.
-        \nRetorna None.'''
-        filtered_df:pandas.DataFrame
+        
+        Retorna None.'''
         coords_data_widget:CoordinatesDataWidget # widget que muestra las coordenadas y topografía del mapa
+        resources_data_widget:ResourcesDataWidget # widget que muestra datos de los recursos del mapa
+        difficulty_data_widget:DifficultyDataWidget # widget que muestra datos sobre la dificultad del mapa
+
+        # limpia la tabla
+        self.ui.tw_mapdata.setRowCount(0) # no hace falta más nada para limpiar la tabla...
 
         # reinicia el value de pb_searchingdata y lo esconde
         self.ui.pb_searchingdata.reset()
@@ -224,11 +229,8 @@ class MainWindow(QMainWindow):
         # guarda el último índice (para btn_show_more)
         self.last_index = self.filtered_indexes[-1] if self.filtered_indexes else 50901
 
-        # crea un dataframe nuevo con los mapas filtrados
-        filtered_df = self.dataframe.loc[filtered_indexes]
-
         # especifica la cantidad de filas inicial de la tabla (muestra 25)
-        self.ui.tw_mapdata.setRowCount(25 if filtered_df.shape[0] >= 25 else filtered_df.shape[0])
+        self.ui.tw_mapdata.setRowCount(len(self.filtered_indexes))
 
         # TODO: crear los widgets necesarios para cada columna acá
         for row in range(self.ui.tw_mapdata.rowCount()):
@@ -246,6 +248,13 @@ class MainWindow(QMainWindow):
             self.ui.tw_mapdata.setColumnWidth(1, 184)
 
             # columna 2: dificultad
+            difficulty_data_widget = DifficultyDataWidget(self.dataframe.at[self.filtered_indexes[row], "Dificultad_del_desafio"],
+                                                          self.dataframe.at[self.filtered_indexes[row], "Temperatura"],
+                                                          self.dataframe.at[self.filtered_indexes[row], "Remolinos_de_polvo"],
+                                                          self.dataframe.at[self.filtered_indexes[row], "Tormentas_de_polvo"],
+                                                          self.dataframe.at[self.filtered_indexes[row], "Meteoritos"],
+                                                          self.dataframe.at[self.filtered_indexes[row], "Olas_de_frio"])
+            self.ui.tw_mapdata.setCellWidget(row, 2, difficulty_data_widget)
 
             # columna 3: innovaciones
         
@@ -278,7 +287,7 @@ class FilterMapsWorker(QObject):
     '''Clase que maneja la función y las señales que sirven para filtrar mapas en un thread/hilo aparte usando un worker. 
     Filtra de a 25 mapas.'''
     # si se encontraron resultados envía un dataframe filtrado, sino envía None
-    progress:Signal = Signal(pandas.Index)
+    progress:Signal = Signal(int)
     completed:Signal = Signal(None)
     
 
@@ -303,7 +312,8 @@ class FilterMapsWorker(QObject):
         filtered_df = df.loc[from_index:to_index, from_col:to_col]
         filtered_df = filtered_df.query(search_expression).head(25)
 
-        self.progress.emit(filtered_df.index)
+        for index in filtered_df.index:
+            self.progress.emit(index)
 
         self.completed.emit()
         return None
@@ -353,4 +363,68 @@ class ResourcesDataWidget(QWidget):
 
 
 
-# class 
+class DifficultyDataWidget(QWidget):
+    '''Clase simple que muestra el nivel de dificultad, la temperatura y los niveles
+    de desastres del mapa.'''
+    def __init__(self, challenge_difficulty:int, temperature:int, dust_devils_lvl:int, dust_storms_lvl:int, 
+                 meteors_lvl:int, cold_waves_lvl:int):
+        super(DifficultyDataWidget, self).__init__()
+        self.diff_ui = Ui_DifficultyDataWidget()
+        self.diff_ui.setupUi(self)
+
+        self.diff_ui.label_challengedifficulty.setText(f"DIF. DEL DESAFÍO: {challenge_difficulty}")
+
+        self.diff_ui.label_temperature.setText(f"{temperature}°C")
+
+        # íconos
+        match dust_devils_lvl:
+            case 1:
+                dd_pixmap = QPixmap(":/icons/threat-level1.png")
+            case 2:
+                dd_pixmap = QPixmap(":/icons/threat-level2.png")
+            case 3:
+                dd_pixmap = QPixmap(":/icons/threat-level3.png")
+            case 4:
+                dd_pixmap = QPixmap(":/icons/threat-level4.png")
+            case _:
+                pass
+        self.diff_ui.label_dd_icon.setPixmap(dd_pixmap)
+
+        match dust_storms_lvl:
+            case 1:
+                ds_pixmap = QPixmap(":/icons/threat-level1.png")
+            case 2:
+                ds_pixmap = QPixmap(":/icons/threat-level2.png")
+            case 3:
+                ds_pixmap = QPixmap(":/icons/threat-level3.png")
+            case 4:
+                ds_pixmap = QPixmap(":/icons/threat-level4.png")
+            case _:
+                pass
+        self.diff_ui.label_ds_icon.setPixmap(ds_pixmap)
+
+        match meteors_lvl:
+            case 1:
+                met_pixmap = QPixmap(":/icons/threat-level1.png")
+            case 2:
+                met_pixmap = QPixmap(":/icons/threat-level2.png")
+            case 3:
+                met_pixmap = QPixmap(":/icons/threat-level3.png")
+            case 4:
+                met_pixmap = QPixmap(":/icons/threat-level4.png")
+            case _:
+                pass
+        self.diff_ui.label_met_icon.setPixmap(met_pixmap)
+        
+        match cold_waves_lvl:
+            case 1:
+                cw_pixmap = QPixmap(":/icons/threat-level1.png")
+            case 2:
+                cw_pixmap = QPixmap(":/icons/threat-level2.png")
+            case 3:
+                cw_pixmap = QPixmap(":/icons/threat-level3.png")
+            case 4:
+                cw_pixmap = QPixmap(":/icons/threat-level4.png")
+            case _:
+                pass
+        self.diff_ui.label_cw_icon.setPixmap(cw_pixmap)

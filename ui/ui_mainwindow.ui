@@ -23,6 +23,9 @@
    <enum>QTabWidget::Rounded</enum>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="toolTip">
+    <string notr="true"/>
+   </property>
    <property name="styleSheet">
     <string notr="true">* {
 	font-family: &quot;VertigoFLF&quot;, &quot;Tw Cen MT&quot;, &quot;Arial&quot;;
@@ -256,7 +259,7 @@ QScrollBar::handle:horizontal {
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Filtrar mapas por las tecnologías del campo de innovaciones&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Filtrar mapas por las tecnologías del campo de innovaciones&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
@@ -663,7 +666,7 @@ QScrollBar::handle:horizontal {
              </size>
             </property>
             <property name="toolTip">
-             <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Permite buscar mapas a partir de innovaciones que aparecen en ellos, cantidad de agua, cantidad de minerales, entre otros tantos criterios.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Permite buscar mapas a partir de innovaciones que aparecen en ellos, cantidad de agua, cantidad de minerales, entre otros tantos criterios.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="inputMask">
              <string notr="true"/>

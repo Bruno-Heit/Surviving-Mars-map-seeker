@@ -30,6 +30,9 @@ class Ui_MainWindow(object):
         MainWindow.setTabShape(QTabWidget.Rounded)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
+#if QT_CONFIG(tooltip)
+        self.centralwidget.setToolTip(u"")
+#endif // QT_CONFIG(tooltip)
         self.centralwidget.setStyleSheet(u"* {\n"
 "	font-family: \"VertigoFLF\", \"Tw Cen MT\", \"Arial\";\n"
 "	font-weight: bold;\n"
@@ -264,7 +267,7 @@ class Ui_MainWindow(object):
         self.lw_breakthroughs.setObjectName(u"lw_breakthroughs")
         self.lw_breakthroughs.setEnabled(False)
 #if QT_CONFIG(tooltip)
-        self.lw_breakthroughs.setToolTip(u"<html><head/><body><p><span style=\" font-size:12pt;\">Filtrar mapas por las tecnolog\u00edas del campo de innovaciones</span></p></body></html>")
+        self.lw_breakthroughs.setToolTip(u"<html><head/><body><p><span style=\" font-size:14pt;\">Filtrar mapas por las tecnolog\u00edas del campo de innovaciones</span></p></body></html>")
 #endif // QT_CONFIG(tooltip)
         self.lw_breakthroughs.setFrameShape(QFrame.NoFrame)
         self.lw_breakthroughs.setFrameShadow(QFrame.Plain)
@@ -312,7 +315,7 @@ class Ui_MainWindow(object):
         self.le_searchbar.setMinimumSize(QSize(0, 0))
         self.le_searchbar.setMaximumSize(QSize(16777215, 16777215))
 #if QT_CONFIG(tooltip)
-        self.le_searchbar.setToolTip(u"<html><head/><body><p><span style=\" font-size:12pt;\">Permite buscar mapas a partir de innovaciones que aparecen en ellos, cantidad de agua, cantidad de minerales, entre otros tantos criterios.</span></p></body></html>")
+        self.le_searchbar.setToolTip(u"<html><head/><body><p><span style=\" font-size:14pt;\">Permite buscar mapas a partir de innovaciones que aparecen en ellos, cantidad de agua, cantidad de minerales, entre otros tantos criterios.</span></p></body></html>")
 #endif // QT_CONFIG(tooltip)
         self.le_searchbar.setInputMask(u"")
         self.le_searchbar.setText(u"")

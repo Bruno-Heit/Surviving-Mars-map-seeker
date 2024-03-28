@@ -67,7 +67,7 @@ def getFilterPandasQuery(search_terms:list[str]|str) -> str:
         "Concreto",
         "Agua",
         "Remolinos_de_polvo",
-        "Tormentas_de_arena",
+        "Tormentas_de_polvo",
         "Meteoritos",
         "Olas_de_frio"
     )
