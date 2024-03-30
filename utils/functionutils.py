@@ -1,11 +1,14 @@
 from PySide6.QtWidgets import (QTableWidget, QHeaderView, QWidget, QGraphicsEffect, 
-                               QGraphicsDropShadowEffect, QProgressBar, QListWidget)
-from PySide6.QtCore import (QSize, QPropertyAnimation, QEasingCurve, QObject)
-from PySide6.QtGui import (QPixmap, QPaintEvent)
+                               QGraphicsDropShadowEffect, QPushButton, QHBoxLayout, 
+                               QListWidget)
+from PySide6.QtCore import (QSize, QRect, QPoint)
+from PySide6.QtGui import (QIcon)
 
-from resources import (rc_images)
+from resources import (rc_images, rc_icons)
 
 from re import (match, split as resplit, Match, IGNORECASE)
+
+import pandas
 
 
 def setTableWidthPolitics(tableWidget:QTableWidget) -> None:
@@ -115,3 +118,20 @@ def getFilterPandasQuery(search_terms:list[str]|str) -> str:
         expression = f"( {expression}.str.contains('{search_terms}', case=False) )"
 
     return expression
+
+
+def showBreakthroughList(widget:QWidget, table_width:int, table_height:int, breakthroughs:list[str]) -> None:
+    '''Recibe un QWidget (superclase de BreakthroughsListWidget) ya creado con un QListWidget y también la lista de innovaciones del 
+    mapa actual y muestra el widget como popup.
+    También recibe un QPoint con la posición del botón que activó el popup, sirve para colocarlo cerca del botón.
+    
+    Retorna None.'''
+    # mueve el widget al centro de la tabla tw_mapdata
+    widget.move(table_width / 2, table_height / 2)
+
+    # añade innovaciones a la lista
+    widget.list_widget.clear()
+    widget.list_widget.addItems(breakthroughs)
+
+    widget.show()
+    return None

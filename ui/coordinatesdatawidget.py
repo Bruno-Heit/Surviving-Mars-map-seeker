@@ -43,6 +43,7 @@ class Ui_CoordinatesDataWidget(object):
 "	letter-spacing: 0px;\n"
 "}")
         self.gridLayout = QGridLayout(CoordinatesDataWidget)
+        self.gridLayout.setSpacing(4)
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setContentsMargins(2, 2, 2, 2)
         self.label_coords = QLabel(CoordinatesDataWidget)

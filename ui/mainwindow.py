@@ -62,11 +62,13 @@ class Ui_MainWindow(object):
 "	border-top: 1px inset;\n"
 "	border-left: 1px inset;\n"
 "	border-color: rgb(67, 239, 224);\n"
+"	background-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(8, 58, 117, 230), stop:0.450282 rgba(61, 156, 210, 160), stop:1 rgba(67, 239, 224, 190));\n"
 "}\n"
-"QPushButton:!enabled {\n"
-"	border-color: #444;\n"
-"	background-color: rgba(254, 242, 216, 1);\n"
-"	color: #888;\n"
+""
+                        "QPushButton:!enabled {\n"
+"	border-color: rgb(47, 159, 154);\n"
+"	background-color: rgb(4, 28, 57);\n"
+"	color: #777;\n"
 "}\n"
 "\n"
 "\n"
@@ -74,8 +76,7 @@ class Ui_MainWindow(object):
 "	color: #F5E002;\n"
 "}\n"
 "\n"
-""
-                        "\n"
+"\n"
 "QTableWidget {\n"
 "	gridline-color:  rgba(113, 238, 254, 1);\n"
 "	margin-top: 10px;\n"
@@ -84,12 +85,15 @@ class Ui_MainWindow(object):
 "\n"
 "QTableWidget,\n"
 "QListWidget {\n"
-"	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.749, fx:0.5, fy:0.5, stop:0 rgba(113, 238, 254, 140), stop:1 rgba(8, 58, 117, 160));\n"
+"	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.749, fx:0.5, fy:0.5, stop:0 rgba(113, 238, 254, 120), stop:1 rgba(8, 58, 117, 140));\n"
 "	selection-color: #8E98A7;\n"
 "	selection-background-color: rgb(26, 141, 144);\n"
 "}\n"
+"QHeaderView {\n"
+"	background-color: transparent;\n"
+"}\n"
 "QHeaderView::section {\n"
-"	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.749, fx:0.5, fy:0.5, stop:0 rgba(113, 238, 254, 210), stop:1 rgba(8, 58, 117, 230));\n"
+"	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.749, fx:0.5, fy:0.5, stop:0 rgba(113, 238, 254, 160), stop:1 rgba(8, 58, 117, 180));\n"
 "	border: none;\n"
 "	border-right: 1px solid;\n"
 "	border-color: rgba(113, 238, 254, 1);\n"
@@ -97,7 +101,8 @@ class Ui_MainWindow(object):
 "}\n"
 "QTableCornerButton::section {\n"
 "	background-color: rgba(113, 238, 254, 1);\n"
-"	border: 1px solid transparent;\n"
+""
+                        "	border: 1px solid transparent;\n"
 "}\n"
 "\n"
 "\n"
@@ -111,8 +116,7 @@ class Ui_MainWindow(object):
 "	font-size: 15px;\n"
 "	background-color: rgba(8, 58, 117, 0.5);\n"
 "	border: none;\n"
-"	border-r"
-                        "adius: 7px;\n"
+"	border-radius: 7px;\n"
 "}\n"
 "QProgressBar::chunk {\n"
 "	background-color: #43EFE0;\n"
@@ -143,7 +147,8 @@ class Ui_MainWindow(object):
 "	height: 0;\n"
 "	background: none;\n"
 "}\n"
-"QScrollBar::add-line {\n"
+""
+                        "QScrollBar::add-line {\n"
 "	width: 0;\n"
 "	height: 0;\n"
 "	background: none;\n"
@@ -157,8 +162,7 @@ class Ui_MainWindow(object):
 "QScrollBar::handle:vertical {\n"
 "	min-height: 15px;\n"
 "}\n"
-"QScro"
-                        "llBar::sub-page:vertical {\n"
+"QScrollBar::sub-page:vertical {\n"
 "	background: none;\n"
 "}\n"
 "QScrollBar::add-page:vertical {\n"
@@ -297,20 +301,20 @@ class Ui_MainWindow(object):
         self.verticalLayout.setSpacing(6)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(5, 5, 5, 5)
-        self.frame = QFrame(self.body)
-        self.frame.setObjectName(u"frame")
-        self.frame.setMinimumSize(QSize(0, 26))
-        self.frame.setMaximumSize(QSize(16777215, 26))
+        self.frame_header = QFrame(self.body)
+        self.frame_header.setObjectName(u"frame_header")
+        self.frame_header.setMinimumSize(QSize(0, 32))
+        self.frame_header.setMaximumSize(QSize(16777215, 32))
 #if QT_CONFIG(tooltip)
-        self.frame.setToolTip(u"")
+        self.frame_header.setToolTip(u"")
 #endif // QT_CONFIG(tooltip)
-        self.frame.setFrameShape(QFrame.NoFrame)
-        self.frame.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_2 = QHBoxLayout(self.frame)
+        self.frame_header.setFrameShape(QFrame.NoFrame)
+        self.frame_header.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_2 = QHBoxLayout(self.frame_header)
         self.horizontalLayout_2.setSpacing(4)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.le_searchbar = QLineEdit(self.frame)
+        self.le_searchbar = QLineEdit(self.frame_header)
         self.le_searchbar.setObjectName(u"le_searchbar")
         self.le_searchbar.setMinimumSize(QSize(0, 0))
         self.le_searchbar.setMaximumSize(QSize(16777215, 16777215))
@@ -324,16 +328,19 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_2.addWidget(self.le_searchbar)
 
-        self.btn_show_search_info = QPushButton(self.frame)
+        self.btn_show_search_info = QPushButton(self.frame_header)
         self.btn_show_search_info.setObjectName(u"btn_show_search_info")
-        self.btn_show_search_info.setMinimumSize(QSize(26, 26))
-        self.btn_show_search_info.setMaximumSize(QSize(26, 26))
-        self.btn_show_search_info.setIconSize(QSize(24, 24))
+        self.btn_show_search_info.setMinimumSize(QSize(32, 32))
+        self.btn_show_search_info.setMaximumSize(QSize(32, 32))
+#if QT_CONFIG(tooltip)
+        self.btn_show_search_info.setToolTip(u"<html><head/><body><p><span style=\" font-size:14pt;\">Ver informaci\u00f3n sobre la b\u00fasqueda de mapas</span></p></body></html>")
+#endif // QT_CONFIG(tooltip)
+        self.btn_show_search_info.setIconSize(QSize(30, 30))
 
         self.horizontalLayout_2.addWidget(self.btn_show_search_info)
 
 
-        self.verticalLayout.addWidget(self.frame)
+        self.verticalLayout.addWidget(self.frame_header)
 
         self.pb_searchingdata = QProgressBar(self.body)
         self.pb_searchingdata.setObjectName(u"pb_searchingdata")
@@ -370,7 +377,7 @@ class Ui_MainWindow(object):
         self.tw_mapdata.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
         self.tw_mapdata.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
         self.tw_mapdata.setShowGrid(True)
-        self.tw_mapdata.verticalHeader().setVisible(True)
+        self.tw_mapdata.verticalHeader().setVisible(False)
 
         self.verticalLayout.addWidget(self.tw_mapdata)
 

@@ -56,11 +56,12 @@ QPushButton:pressed {
 	border-top: 1px inset;
 	border-left: 1px inset;
 	border-color: rgb(67, 239, 224);
+	background-color: qlineargradient(spread:pad, x1:0.5, y1:1, x2:0.5, y2:0, stop:0 rgba(8, 58, 117, 230), stop:0.450282 rgba(61, 156, 210, 160), stop:1 rgba(67, 239, 224, 190));
 }
 QPushButton:!enabled {
-	border-color: #444;
-	background-color: rgba(254, 242, 216, 1);
-	color: #888;
+	border-color: rgb(47, 159, 154);
+	background-color: rgb(4, 28, 57);
+	color: #777;
 }
 
 
@@ -77,12 +78,15 @@ QTableWidget {
 
 QTableWidget,
 QListWidget {
-	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.749, fx:0.5, fy:0.5, stop:0 rgba(113, 238, 254, 140), stop:1 rgba(8, 58, 117, 160));
+	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.749, fx:0.5, fy:0.5, stop:0 rgba(113, 238, 254, 120), stop:1 rgba(8, 58, 117, 140));
 	selection-color: #8E98A7;
 	selection-background-color: rgb(26, 141, 144);
 }
+QHeaderView {
+	background-color: transparent;
+}
 QHeaderView::section {
-	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.749, fx:0.5, fy:0.5, stop:0 rgba(113, 238, 254, 210), stop:1 rgba(8, 58, 117, 230));
+	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.749, fx:0.5, fy:0.5, stop:0 rgba(113, 238, 254, 160), stop:1 rgba(8, 58, 117, 180));
 	border: none;
 	border-right: 1px solid;
 	border-color: rgba(113, 238, 254, 1);
@@ -613,17 +617,17 @@ QScrollBar::handle:horizontal {
         <number>5</number>
        </property>
        <item>
-        <widget class="QFrame" name="frame">
+        <widget class="QFrame" name="frame_header">
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>26</height>
+           <height>32</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>26</height>
+           <height>32</height>
           </size>
          </property>
          <property name="toolTip">
@@ -686,23 +690,26 @@ QScrollBar::handle:horizontal {
            <widget class="QPushButton" name="btn_show_search_info">
             <property name="minimumSize">
              <size>
-              <width>26</width>
-              <height>26</height>
+              <width>32</width>
+              <height>32</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>26</width>
-              <height>26</height>
+              <width>32</width>
+              <height>32</height>
              </size>
+            </property>
+            <property name="toolTip">
+             <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Ver información sobre la búsqueda de mapas&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="text">
              <string/>
             </property>
             <property name="iconSize">
              <size>
-              <width>24</width>
-              <height>24</height>
+              <width>30</width>
+              <height>30</height>
              </size>
             </property>
            </widget>
@@ -777,7 +784,7 @@ QScrollBar::handle:horizontal {
           <bool>true</bool>
          </property>
          <attribute name="verticalHeaderVisible">
-          <bool>true</bool>
+          <bool>false</bool>
          </attribute>
          <column>
           <property name="text">

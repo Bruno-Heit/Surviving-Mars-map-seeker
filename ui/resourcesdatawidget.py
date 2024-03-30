@@ -47,7 +47,7 @@ class Ui_ResourcesDataWidget(object):
 "	color: #F5E002;\n"
 "}")
         self.horizontalLayout = QHBoxLayout(ResourcesDataWidget)
-        self.horizontalLayout.setSpacing(3)
+        self.horizontalLayout.setSpacing(4)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(2, 2, 2, 2)
         self.label_metals_icon = QLabel(ResourcesDataWidget)

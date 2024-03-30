@@ -1,6 +1,7 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
     <qresource prefix="images">
-        <file alias="background-hexagons.svg">../images/bg_hexa.svg</file>
+        <file alias="bg-hexagons.svg">../images/bg_hexa.svg</file>
+        <file alias="bg-hexagons.png">../images/bg_hexa.png</file>
     </qresource>
 </RCC>

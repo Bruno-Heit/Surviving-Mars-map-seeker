@@ -6,6 +6,8 @@
         <file alias="rare_metals.ico">../icons/rare_metals.ico</file>
         <file alias="water.ico">../icons/water.ico</file>
         <file alias="menu.svg">../icons/menu.svg</file>
+        <file alias="show-info.ico">../icons/show_info.ico</file>
+        <file alias="technology.ico">../icons/technology.ico</file>
         <file alias="threat-level1.png">../icons/threat_level1_icon.png</file>
         <file alias="threat-level2.png">../icons/threat_level2_icon.png</file>
         <file alias="threat-level3.png">../icons/threat_level3_icon.png</file>

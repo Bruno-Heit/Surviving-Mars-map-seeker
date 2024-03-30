@@ -2,17 +2,19 @@ from ui.mainwindow import Ui_MainWindow
 from ui.coordinatesdatawidget import Ui_CoordinatesDataWidget
 from ui.resourcesdatawidget import Ui_ResourcesDataWidget
 from ui.difficultydatawidget import Ui_DifficultyDataWidget
+from ui.showbreakthroughswidget import Ui_ShowBreakthroughsWidget
+from ui.breakthroughslistwidget import Ui_BreakthroughsListWidget
 
 from resources import (rc_icons, rc_images)
 
-from PySide6.QtWidgets import (QMainWindow, QWidget)
+from PySide6.QtWidgets import (QMainWindow, QWidget, QFrame)
 from PySide6.QtGui import (QIcon, QPixmap, QRegularExpressionValidator)
-from PySide6.QtCore import (QPropertyAnimation, QEasingCurve, QSize, QThread, QObject, Signal, Slot)
+from PySide6.QtCore import (QPropertyAnimation, QEasingCurve, QSize, QThread, QObject, Signal, 
+                            Slot, Qt, QPoint)
 
 from utils.functionutils import *
 
 import pandas
-from re import (findall, IGNORECASE)
 
 
 
@@ -35,15 +37,18 @@ class MainWindow(QMainWindow):
         icon.addFile(":/icons/menu.svg", QSize(24, 24))
         self.ui.btn_sidebar_toggle.setIcon(icon)
         # coloca el ícono en btn_show_search_info
-        icon = QIcon()
-        icon.addFile(":/icons/show_info.ico", QSize(24, 24))
-        self.ui.btn_show_search_info.setIcon(icon)
+        icon2 = QIcon()
+        icon2.addFile(":/icons/show-info.ico", QSize(30, 30))
+        self.ui.btn_show_search_info.setIcon(icon2)
 
         # añado efecto box-shadow fluorescente a los widgets
         addGlowToBorder(self.ui.btn_sidebar_toggle)
         addGlowToBorder(self.ui.le_searchbar)
         addGlowToBorder(self.ui.btn_show_more)
         addGlowToBorder(self.ui.pb_searchingdata)
+
+        # ventana flotante para mostrarse en tw_mapdata cuando se haga click en algún botón de columna de innovaciones
+        self.br_floating_window:QWidget = BreakthroughsListWidget()
 
         # dataframe con innovaciones
         pandas_usecols:list[str] = [
@@ -218,6 +223,7 @@ class MainWindow(QMainWindow):
         coords_data_widget:CoordinatesDataWidget # widget que muestra las coordenadas y topografía del mapa
         resources_data_widget:ResourcesDataWidget # widget que muestra datos de los recursos del mapa
         difficulty_data_widget:DifficultyDataWidget # widget que muestra datos sobre la dificultad del mapa
+        show_br_widget:WidgetShowBreakthroughs # botón que sirve para mostrar todas las innovaciones del mapa
 
         # limpia la tabla
         self.ui.tw_mapdata.setRowCount(0) # no hace falta más nada para limpiar la tabla...
@@ -232,7 +238,6 @@ class MainWindow(QMainWindow):
         # especifica la cantidad de filas inicial de la tabla (muestra 25)
         self.ui.tw_mapdata.setRowCount(len(self.filtered_indexes))
 
-        # TODO: crear los widgets necesarios para cada columna acá
         for row in range(self.ui.tw_mapdata.rowCount()):
             # columna 0: coordenadas/topografía
             coords_data_widget = CoordinatesDataWidget(coords=self.dataframe.at[self.filtered_indexes[row], "Coordenadas"],
@@ -257,7 +262,17 @@ class MainWindow(QMainWindow):
             self.ui.tw_mapdata.setCellWidget(row, 2, difficulty_data_widget)
 
             # columna 3: innovaciones
-        
+            show_br_widget = WidgetShowBreakthroughs(
+                coords=self.dataframe.at[self.filtered_indexes[row], "Coordenadas"], 
+                index=self.filtered_indexes[row])
+            # conecto la señal del botón
+            show_br_widget.is_clicked.connect(lambda index: showBreakthroughList(
+                widget=self.br_floating_window, 
+                table_width=self.ui.tw_mapdata.viewport().width(),
+                table_height=self.ui.tw_mapdata.viewport().height(),
+                breakthroughs=self.dataframe.loc[index, "Innovacion_1":"Innovacion_12"].to_list() ))
+            
+            self.ui.tw_mapdata.setCellWidget(row, 3, show_br_widget)
 
         self.ui.tw_mapdata.resizeRowsToContents()
 
@@ -428,3 +443,59 @@ class DifficultyDataWidget(QWidget):
             case _:
                 pass
         self.diff_ui.label_cw_icon.setPixmap(cw_pixmap)
+
+
+
+
+
+class WidgetShowBreakthroughs(QWidget):
+    is_clicked:Signal = Signal(int) # cuando se hace click en el botón se envía a MainWindow el índice del mapa
+
+    def __init__(self, coords:str, index:int): # index es el índice en el DataFrame (0 a 50901)
+        super(WidgetShowBreakthroughs, self).__init__()
+        self.showbr_ui = Ui_ShowBreakthroughsWidget()
+        self.showbr_ui.setupUi(self)
+        self.setObjectName(f"widget_show_{index}")
+
+        icon = QIcon()
+        icon.addFile(":/icons/technology.ico", QSize(42, 42))
+        self.showbr_ui.btn_show.setIcon(icon)
+
+        self.showbr_ui.btn_show.setText(f"Ver innovaciones de {coords}")
+
+        self.showbr_ui.btn_show.clicked.connect(lambda: self.is_clicked.emit(index))
+
+
+
+
+
+class CustomLisWidget(QListWidget):
+    '''ListWidget con el 'paintEvent' modificado. Es usado en BreakthroughsListWidget.'''
+    def __init__(self):
+        super(CustomLisWidget, self).__init__()
+        self.setFrameShape(QFrame.Shape.NoFrame)
+        self.setEditTriggers(QListWidget.EditTrigger.NoEditTriggers)
+        self.setWrapping(False)
+        self.setWordWrap(True)
+
+        self.setStyleSheet("background-image: url(:/images/bg-hexagons.png); background-repeat: repeat;")
+
+
+
+
+
+class BreakthroughsListWidget(QWidget):
+    '''QWidget con un QListWidget con una lista de todas las innovaciones que tiene el mapa actual.'''
+    def __init__(self):
+        super(BreakthroughsListWidget, self).__init__()
+        self.brlist_ui = Ui_BreakthroughsListWidget()
+        self.brlist_ui.setupUi(self)
+
+        self.setParent(None)
+        self.setWindowFlags(self.windowFlags() | Qt.WindowType.FramelessWindowHint | Qt.WindowType.Popup)
+        self.setFixedSize(220, 380)
+        self.setWindowOpacity(0.88)
+
+        # instancio CustomListWidget
+        self.list_widget = CustomLisWidget()
+        self.brlist_ui.horizontalLayout.addWidget(self.list_widget)

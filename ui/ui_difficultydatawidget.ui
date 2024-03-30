@@ -48,18 +48,21 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
-    <number>4</number>
+    <number>2</number>
    </property>
    <property name="topMargin">
-    <number>4</number>
+    <number>2</number>
    </property>
    <property name="rightMargin">
-    <number>4</number>
+    <number>2</number>
    </property>
    <property name="bottomMargin">
-    <number>4</number>
+    <number>2</number>
    </property>
-   <property name="spacing">
+   <property name="horizontalSpacing">
+    <number>2</number>
+   </property>
+   <property name="verticalSpacing">
     <number>4</number>
    </property>
    <item row="2" column="0">
@@ -113,8 +116,8 @@
     <widget class="QFrame" name="frame_dustdevils">
      <property name="minimumSize">
       <size>
-       <width>276</width>
-       <height>41</height>
+       <width>0</width>
+       <height>0</height>
       </size>
      </property>
      <property name="toolTip">
@@ -137,7 +140,7 @@
        <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>5</number>
       </property>
       <property name="bottomMargin">
        <number>0</number>
@@ -146,8 +149,8 @@
        <widget class="QLabel" name="label_dd_icon">
         <property name="minimumSize">
          <size>
-          <width>166</width>
-          <height>41</height>
+          <width>110</width>
+          <height>27</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -199,8 +202,8 @@
     <widget class="QFrame" name="frame_duststorms">
      <property name="minimumSize">
       <size>
-       <width>276</width>
-       <height>41</height>
+       <width>0</width>
+       <height>0</height>
       </size>
      </property>
      <property name="toolTip">
@@ -223,7 +226,7 @@
        <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>5</number>
       </property>
       <property name="bottomMargin">
        <number>0</number>
@@ -232,8 +235,8 @@
        <widget class="QLabel" name="label_ds_icon">
         <property name="minimumSize">
          <size>
-          <width>166</width>
-          <height>41</height>
+          <width>110</width>
+          <height>27</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -273,8 +276,8 @@
     <widget class="QFrame" name="frame_meteors">
      <property name="minimumSize">
       <size>
-       <width>235</width>
-       <height>41</height>
+       <width>0</width>
+       <height>0</height>
       </size>
      </property>
      <property name="toolTip">
@@ -306,8 +309,8 @@
        <widget class="QLabel" name="label_met_icon">
         <property name="minimumSize">
          <size>
-          <width>166</width>
-          <height>41</height>
+          <width>110</width>
+          <height>27</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -347,8 +350,8 @@
     <widget class="QFrame" name="frame_coldwaves">
      <property name="minimumSize">
       <size>
-       <width>235</width>
-       <height>41</height>
+       <width>0</width>
+       <height>0</height>
       </size>
      </property>
      <property name="toolTip">
@@ -380,8 +383,8 @@
        <widget class="QLabel" name="label_cw_icon">
         <property name="minimumSize">
          <size>
-          <width>166</width>
-          <height>41</height>
+          <width>110</width>
+          <height>27</height>
          </size>
         </property>
         <property name="maximumSize">
